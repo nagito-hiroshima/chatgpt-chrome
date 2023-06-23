@@ -1,7 +1,7 @@
 {
   // ********** 必須の設定項目 **********/
   "manifest_version": 3, // バージョン V3 を示す
-  "name": "優先道路", // 任意の拡張機能名
+  "name": "高規格道路", // 任意の拡張機能名
   "version": "1.0.0.0", // 拡張機能のバージョン
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。", // 任意の説明文
   "icons": {
@@ -24,7 +24,10 @@
       ]
     }
   ],
-  "permissions": [],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage"],
   "background": {
     "service_worker": "main.js" // background.js とかで良い
   }

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head><title>My Test Extension Options</title></head>
+<!--文字コード-->
+<meta charset="utf-8">
+<body>
+  <style type="text/css">
+    * {
+      margin: 20;
+      padding: 0;
+      /*中央*/
+      text-align: center;
+    }
+    input #nkey-input {
+      width: 100px;
+      height: 100px;
+      color: #000000;
+      background-color: #ffffff;   
+    }
+
+    h2 {
+      color: white;
+    background-color: #999999;
+    }
+    h3{
+      /*上下中央*/
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+/* === ボタンを表示するエリア ============================== */
+.switchArea {
+  line-height    : 40px;                /* 1行の高さ          */
+  letter-spacing : 0;                   /* 文字間             */
+  text-align     : center;              /* 文字位置は中央     */
+  font-size      : 20px;                /* 文字サイズ         */
+
+  position       : relative;            /* 親要素が基点       */
+  margin         : auto;                /* 中央寄せ           */
+  width          : 100px;               /* ボタンの横幅       */
+  background     : #fff;                /* デフォルト背景色   */
+}
+
+ /* === チェックボックス ==================================== */
+.switchArea input[type="checkbox"] {
+  display        : none;            /* チェックボックス非表示 */
+}
+
+ /* === チェックボックスのラベル（標準） ==================== */
+.switchArea label {
+  display        : block;               /* ボックス要素に変更 */
+  box-sizing     : border-box;          /* 枠線を含んだサイズ */
+  height         : 40px;                /* ボタンの高さ       */
+  border         : 2px solid #999999;   /* 未選択タブのの枠線 */
+  border-radius  : 30px;                /* 角丸               */
+}
+
+ /* === チェックボックスのラベル（ONのとき） ================ */
+.switchArea input[type="checkbox"]:checked +label {
+  border-color   : #78bd78;             /* 選択タブの枠線     */
+}
+
+ /* === 表示する文字（標準） ================================ */
+.switchArea label span:after{
+  content        : "OFF";               /* 表示する文字       */
+  padding        : 0 0 0 36px;          /* 表示する位置       */
+  color          : #999999;             /* 文字色             */
+}
+
+ /* === 表示する文字（ONのとき） ============================ */
+.switchArea  input[type="checkbox"]:checked + label span:after{
+  content        : "ON";                /* 表示する文字       */
+  padding        : 0 36px 0 0;          /* 表示する位置       */
+  color          : #78bd78;             /* 文字色             */
+}
+
+ /* === 丸部分のSTYLE（標準） =============================== */
+.switchArea #swImg {
+  position       : absolute;            /* 親要素からの相対位置*/
+  width          : 32px;                /* 丸の横幅           */
+  height         : 32px;                /* 丸の高さ           */
+  background     : #999999;             /* カーソルタブの背景 */
+  top            : 4px;                 /* 親要素からの位置   */
+  left           : 4px;                 /* 親要素からの位置   */
+  border-radius  : 26px;                /* 角丸               */
+  transition     : .2s;                 /* 滑らか変化         */
+}
+
+ /* === 丸部分のSTYLE（ONのとき） =========================== */
+.switchArea input[type="checkbox"]:checked ~ #swImg {
+  transform      : translateX(60px);    /* 丸も右へ移動       */
+  background     : #78bd78;             /* カーソルタブの背景 */
+}
+    
+    
+    #save {
+      /*緑のボタン*/  
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+    #header-car {
+      /*横並び*/
+      display: flex;
+      flex-direction: row;
+      /*中央寄せ*/
+      justify-content: center;
+      align-items: center;
+
+    }
+
+
+    </style>
+    <!--ヘッダー-->
+    <div id="header-car">
+      <img src="icon128.png" alt="icon" width="40" height="40">
+      <h1>高規格道路</h1>
+    </div>
+    <div id="setting">
+      <h2>設定</h2>
+<h3>車両のナンバー</h3>    
+<input type="text" id="nkey-input"></input>
+<!--チェックボックス-->
+<br>
+<h3><img src="etc_logo.jpg" height="15px">ETC搭載車両</h3>
+<div class="switchArea">
+  <input type="checkbox" id="nkey-checkbox">
+  <label for="nkey-checkbox"><span></span></label>
+  <div id="swImg"></div>
+</div>
+
+<br>
+
+<div id="status"></div>
+<button id="save">保存</button>
+
+<script src="popup-js.js">
+</script>
+</body>
+</html>

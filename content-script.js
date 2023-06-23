@@ -1,17 +1,41 @@
-const API_KEY = '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';
+/* 宣言 */
 const URL = "https://api.openai.com/v1/chat/completions";
 const locations = window.location.href;
 const str = document.querySelector(".usertext.mr-1").textContent;
-let str2
+const elem = document.querySelectorAll('.formulation');
+let str2, API_KEY, API_CHEAK;
 
-function reply(test) {
+
+//chrome.storage に保存されている値を取得して表示する
+chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
+    console.log(value)
+    API_KEY = value.nkey;
+    API_CHEAK = value.ncheak;
+
+    //.adblockを削除
+    if (API_CHEAK != true)
+        document.querySelectorAll('.adblock').forEach(function (value) {
+            value.remove();
+        }
+        );
+
+});
+
+//.formulationの中のa.adblockを追加
+elem.forEach(function (value) {
+    const text = value.textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "");
+    value.innerHTML += `<a class="adblock">　　　　</a>`;
+});
+
+
+
+
+/* AdBlock */
+function reply(text) {
     //usertext mr-1の8文字目を0に変更
     str2 = str.slice(0, 7) + "0" + str.slice(8);
     document.querySelector(".usertext.mr-1").innerHTML = str2
 
-
-
-    var text = test;
     async function getResponse() {
         try {
             const response = await axios.post(
@@ -50,11 +74,7 @@ function reply(test) {
     }
     getResponse();
 }
-const elem = document.querySelectorAll('.formulation');
-elem.forEach(function (value) {
-    const text = value.textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "")
-    value.innerHTML += `<a class="adblock">　　　　</a>`
-})
+
 
 //.formulationの中のa.adblockがクリックされたら
 document.querySelectorAll('.formulation a').forEach(function (value) {
@@ -67,13 +87,13 @@ document.querySelectorAll('.formulation a').forEach(function (value) {
     });
 });
 
-//.formulationの中のa.adblockがクリックされたら
+//.formulationがクリックされたら
 document.querySelectorAll('.formulation').forEach(function (value) {
     value.addEventListener('click', function () {
-
+        //location.hrefを比較
         if (locations != location.href) {
             history.replaceState("", "", locations.substring(locations.indexOf("/2")))
-            document.querySelector(".usertext.mr-1").innerHTML  = str
+            document.querySelector(".usertext.mr-1").innerHTML = str
         }
     });
 });
