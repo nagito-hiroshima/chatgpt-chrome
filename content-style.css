@@ -1,0 +1,12 @@
+.adblock{
+    /*親ブロックの右上に透明にして配置*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*透明にする*/
+    opacity: 0;
+    /*親ブロックの上に配置*/
+    z-index: 1;
+    /*カーソルを指に*/
+    cursor: pointer;
+}
