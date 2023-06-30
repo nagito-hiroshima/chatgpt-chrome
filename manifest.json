@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "高規格道路",
-  "version": "1.0.0.0",
+  "version": "1.2.0",
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。",
   "icons": {
     "16": "icon16.png",
