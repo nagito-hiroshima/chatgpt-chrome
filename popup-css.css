@@ -22,11 +22,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px;
   }
 
   /* === ボタンを表示するエリア ============================== */
   .switchArea {
-    line-height: 40px;
+    line-height: 28px;
     /* 1行の高さ          */
     letter-spacing: 0;
     /* 文字間             */
@@ -57,7 +58,7 @@
     /* ボックス要素に変更 */
     box-sizing: border-box;
     /* 枠線を含んだサイズ */
-    height: 40px;
+    height: 33px;
     /* ボタンの高さ       */
     border: 2px solid #999999;
     /* 未選択タブのの枠線 */
@@ -75,7 +76,7 @@
   .switchArea label span:after {
     content: "OFF";
     /* 表示する文字       */
-    padding: 0 0 0 36px;
+    padding: 0 0 0 29px;
     /* 表示する位置       */
     color: #999999;
     /* 文字色             */
@@ -95,9 +96,9 @@
   .switchArea #swImg {
     position: absolute;
     /* 親要素からの相対位置*/
-    width: 32px;
+    width: 25px;
     /* 丸の横幅           */
-    height: 32px;
+    height: 25px;
     /* 丸の高さ           */
     background: #999999;
     /* カーソルタブの背景 */
@@ -113,7 +114,7 @@
 
   /* === 丸部分のSTYLE（ONのとき） =========================== */
   .switchArea input[type="checkbox"]:checked~#swImg {
-    transform: translateX(60px);
+    transform: translateX(67px);
     /* 丸も右へ移動       */
     background: #78bd78;
     /* カーソルタブの背景 */
@@ -126,11 +127,11 @@
 
   #save {
     /*緑のボタン 下*/
-    margin-top: 30px;
+    margin-top: 0px;
     background-color: #4CAF50;
     border: none;
     color: white;
-    padding: 10px 30px;
+    padding: 5px 30px;
     border-radius: 5px;
     text-align: center;
     text-decoration: none;
@@ -186,3 +187,72 @@
   .panel.is-show {
     display: block;
   }
+
+
+
+  @import "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
+
+
+.btn,
+a.btn,
+button.btn {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 1.0rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+}
+
+a.btn-tag {
+  padding: 1.0rem 1.2rem 1.0rem 3.5rem;
+  color: #fff;
+  background: #f39800;
+}
+
+a.btn-tag:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 40px;
+  height: 100%;
+
+  content: "";
+
+  border-radius: 0.5rem 0 0 0.5rem;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+a.btn-tag:hover {
+  color: #fff;
+  background: #ffa50e;
+}
+
+a.btn-tag i {
+  font-size: 120%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 40px;
+  padding: 1.1rem 0;
+
+  text-align: center;
+  letter-spacing: 0;
+}

@@ -1,5 +1,6 @@
 
 // Saves options to chrome.storage 
+
 function save_options() {
   var nkey_input = document.getElementById('nkey-input').value;
   var nkey_cheak = document.getElementById('nkey-checkbox').checked;
@@ -45,6 +46,7 @@ function save_options() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
         status.textContent = '保存されました';
+        document.getElementById("keystore").style.display = "none";
 
 
         chrome.runtime.sendMessage({
@@ -63,8 +65,14 @@ function save_options() {
       })
       var status = document.getElementById('status');
       status.textContent = 'APIが正しくありません';
+      document.getElementById('nkey-input').value = "";
+      chrome.storage.sync.set({
+        nkey: document.getElementById('nkey-input').value,
+        ncheak: document.getElementById('nkey-checkbox').checked
+      }, function () { })
       document.getElementById('loader').style.display = "none";
       document.getElementById('saves').textContent = "保存";
+      document.getElementById("keystore").style.display = "block";
     });
 
 }
@@ -76,6 +84,13 @@ function restore_options() {
   chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (items) {
     document.getElementById('nkey-input').value = items.nkey;
     document.getElementById('nkey-checkbox').checked = items.ncheak;
+
+    if (items.nkey != "") {
+      document.getElementById("keystore").style.display = "none";
+    } else {
+      document.getElementById("keystore").style.display = "block";
+    }
+
   });
 }
 
@@ -88,6 +103,12 @@ document.addEventListener('selectstart', function (e) {
   e.preventDefault();
 }
   , false);
+//nkey-inputは範囲選択可能
+document.getElementById('nkey-input').addEventListener('selectstart', function (e) {
+  e.stopPropagation();
+}
+  , false);
+  
 
 
 document.addEventListener('DOMContentLoaded', function () {

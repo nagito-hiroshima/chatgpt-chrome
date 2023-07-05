@@ -14,7 +14,7 @@ chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
     console.log(value)
     API_KEY = value.nkey;
     if (API_KEY == "") {
-        chrome.action.setBadgeText({ "text": "no" });
+        chrome.action.setBadgeText({ "text": " " });
 
     } else {
         chrome.action.setBadgeText({ "text": "" });
