@@ -11,7 +11,9 @@ chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
     console.log(value)
     API_KEY = value.nkey;
     API_CHEAK = value.ncheak;
-
+    
+    
+ 
     //.adblockを削除
     if (API_CHEAK != true)
         document.querySelectorAll('.adblock').forEach(function (value) {
@@ -20,6 +22,11 @@ chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
         );
 
 });
+
+
+
+
+
 
 //.formulationの中のa.adblockを追加
 elem.forEach(function (value) {
@@ -97,6 +104,7 @@ document.querySelectorAll('.formulation').forEach(function (value) {
         }
     });
 });
+
 
 
 
