@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener(
+chrome.runtime.onMessage.addListener(//拡張機能バッジ
     function (request, sender, sendResponse) {
         //拡張機能バッジ
         if(request.greeting == "none"){
@@ -10,11 +10,12 @@ chrome.runtime.onMessage.addListener(
     }});
 
 
-chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
+chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {//nkeyがない場合は初期化
     console.log(value)
     API_KEY = value.nkey;
     if (API_KEY == "") {
         chrome.action.setBadgeText({ "text": " " });
+        chrome.action.setBadgeBackgroundColor({ color: [0, 0, 0, 255] });   
 
     } else {
         chrome.action.setBadgeText({ "text": "" });

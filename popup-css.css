@@ -168,7 +168,8 @@
 
   .panel-group {
     height: 300px;
-    width: 186px;
+    max-width: 186px;
+    min-width: 186px;
     border: solid 1px #CCC;
     border-top: none;
     background: #eee;
@@ -219,7 +220,7 @@ button.btn {
 }
 
 a.btn-tag {
-  padding: 1.0rem 1.2rem 1.0rem 3.5rem;
+  padding: 1.0rem 1.0rem 1.0rem 3.5rem;
   color: #fff;
   background: #f39800;
 }

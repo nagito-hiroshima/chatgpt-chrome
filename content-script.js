@@ -25,9 +25,6 @@ chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (value) {
 
 
 
-
-
-
 //.formulationの中のa.adblockを追加
 elem.forEach(function (value) {
     const text = value.textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "");
@@ -36,14 +33,16 @@ elem.forEach(function (value) {
 
 
 
-
 /* AdBlock */
-function reply(text) {
+function reply(value) {
+    text = (value.parentElement).textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "")
     //usertext mr-1の8文字目を0に変更
     str2 = str.slice(0, 7) + "0" + str.slice(8);
     document.querySelector(".usertext.mr-1").innerHTML = str2
 
     async function getResponse() {
+        
+        console.log("[Q]"+text)
         try {
             const response = await axios.post(
                 URL,
@@ -61,22 +60,23 @@ function reply(text) {
                 }
             );
             var chatgpt_response = response.data.choices[0].message.content;
-            console.log(chatgpt_response)
+            
+            
+            //value　adblock内ににツールチップを追加
+            value.parentElement.parentElement.parentElement.children[0].lastElementChild.lastElementChild.title=chatgpt_response
             //usertext mr-1の8文字目を1に変更
             if (chatgpt_response.slice(0, 1).match(/[0-9]|[０-９]/)) {
                 str2 = str.slice(0, 7) + chatgpt_response.slice(0, 1) + str.slice(8);
             } else {
 
                 str2 = str.slice(0, 6) + 89 + str.slice(8);
-                //クエリパラメーターを設定
-                history.pushState('', '', locations.substring(locations.indexOf("/2")) + '&di=' + chatgpt_response.slice(0, 8));
-
             }
 
             document.querySelector(".usertext.mr-1").innerHTML = str2
-
+            console.log("[A]"+chatgpt_response)
         } catch (error) {
-            console.log(error);
+
+            console.log("[E]"+error);
         }
     }
     getResponse();
@@ -87,10 +87,9 @@ function reply(text) {
 document.querySelectorAll('.formulation a').forEach(function (value) {
     value.addEventListener('click', function () {
         //textcontentを取得
-        let text = value.parentElement
-        text = text.textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "")
+        
         //選択をクリアする
-        reply(text);
+        reply(value);
     });
 });
 
@@ -104,8 +103,6 @@ document.querySelectorAll('.formulation').forEach(function (value) {
         }
     });
 });
-
-
 
 
 

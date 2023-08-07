@@ -1,14 +1,21 @@
-
-// Saves options to chrome.storage 
-
+//保存ボタンが押されたら
+//chrome.storageにnkeyとncheakを保存する
+//nkeyはAPIキー
+//ncheakはモードがONかどうかのチェック
 function save_options() {
+  //nkey-inputの値を取得
   var nkey_input = document.getElementById('nkey-input').value;
+  //nkey-checkboxの値を取得
   var nkey_cheak = document.getElementById('nkey-checkbox').checked;
+  
   //loaderを表示させる
   document.getElementById('loader').style.display = "block";
+  //savesのテキストを変更
   document.getElementById('saves').textContent = "";
+  //statusのテキストを変更
   document.getElementById('status').textContent = '保存中...';
 
+  //APIキーが正しいかどうかを確認する
   const endpoint = 'https://api.openai.com/v1/chat/completions';
   fetch(endpoint, {
     method: 'POST',
@@ -31,70 +38,94 @@ function save_options() {
     .then(response => response.json())
 
     // レスポンスのJSONをコンソールに出力する
+
     .then(data => {
       const text = data.choices[0].message.content;
       console.log(text)
+      //正しいAPIキーだったら
+      //chrome.storageにnkeyとncheakを保存する
       chrome.storage.sync.set({
         nkey: nkey_input,
         ncheak: nkey_cheak
       }, function () {
-
-
-
-
-
-        // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = '保存されました';
+        // 保存後の処理
+        //statusのテキストを変更
+        document.getElementById('status').textContent = '保存されました';
+        //apiキー購入ボタンを非表示にする
         document.getElementById("keystore").style.display = "none";
-
-
+        
+        //background.jsにメッセージを送る
         chrome.runtime.sendMessage({
           greeting: "none"
         })
 
       });
+
+      //loaderを非表示にする
       document.getElementById('loader').style.display = "none";
+      //savesのテキストを変更
       document.getElementById('saves').textContent = "保存";
 
     })
     // エラー処理
     .catch(error => {
+      //background.jsにメッセージを送る
       chrome.runtime.sendMessage({
         greeting: "error"
       })
-      var status = document.getElementById('status');
-      status.textContent = 'APIが正しくありません';
+      //statusのテキストを変更
+      document.getElementById('status').textContent = 'APIが正しくありません';
+      //nkey-inputの値を空にする
       document.getElementById('nkey-input').value = "";
+      
+      //chrome.storageにnkeyとncheakを保存する
       chrome.storage.sync.set({
         nkey: document.getElementById('nkey-input').value,
         ncheak: document.getElementById('nkey-checkbox').checked
       }, function () { })
+      //loaderを非表示にする
       document.getElementById('loader').style.display = "none";
+      //savesのテキストを変更
       document.getElementById('saves').textContent = "保存";
+      //apiキー購入ボタンを表示する
       document.getElementById("keystore").style.display = "block";
     });
 
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
+//chrome.storageからnkeyとncheakを取得する
+//nkeyはAPIキー
+//ncheakはモードがONかどうかのチェック
+//nkey-inputとnkey-checkboxにそれぞれ代入する
 function restore_options() {
-  // Use default value nkey-input = 'red' and likesnkey-input = true.
-  chrome.storage.sync.get({ "nkey": "", "ncheak": "" }, function (items) {
+  //chrome.storageからnkeyとncheak,selectkeyを取得する
+  chrome.storage.sync.get({ "nkey": "", "ncheak": "","selectkey":"btn-g1-f","user_id":"","user_pass":""}, function (items) {
+    //nkey-inputとnkey-checkboxにそれぞれ代入する
     document.getElementById('nkey-input').value = items.nkey;
     document.getElementById('nkey-checkbox').checked = items.ncheak;
+    //carsにselectkeyに入っている値を代入
+    document.getElementById("cars").value = items.selectkey;
 
+    //user_idにuser_idに入っている値を代入
+    document.getElementById("user_id").value = items.user_id;
+    //user_passにuser_passに入っている値を代入
+    document.getElementById("user_pass").value = items.user_pass;
+    
+    //nkeyが空だったら
     if (items.nkey != "") {
+      //apiキー購入ボタンを非表示にする
       document.getElementById("keystore").style.display = "none";
     } else {
+      //apiキー購入ボタンを表示する
       document.getElementById("keystore").style.display = "block";
     }
 
   });
 }
 
+//popup.htmlが読み込まれたら
 document.addEventListener('DOMContentLoaded', restore_options);
+//保存ボタンが押されたら
 document.getElementById('save').addEventListener('click',
   save_options);
 
@@ -108,7 +139,42 @@ document.getElementById('nkey-input').addEventListener('selectstart', function (
   e.stopPropagation();
 }
   , false);
-  
+
+
+//carsのselect値が変更されたら
+document.getElementById('cars').addEventListener('change', function () {
+  //選択されたoption要素を取得する
+  var selected = document.getElementById('cars').options[document.getElementById('cars').selectedIndex].value;
+  //選択されたoption要素のvalue属性値を取得する
+  console.log(selected);
+
+  //chrome.storage にselectkeyとして保存する
+  chrome.storage.sync.set({
+      selectkey: selected
+  }, function () {
+
+  });
+});
+
+//user_idが変更されたら
+document.getElementById('user_id').addEventListener('change', function () {
+ var user_id = document.getElementById('user_id').value;
+  //chrome.storage にuser_idとして保存する
+  chrome.storage.sync.set({
+      user_id: user_id
+  }, function () {
+  });
+});
+
+//user_passが変更されたら
+document.getElementById('user_pass').addEventListener('change', function () {
+  var user_pass = document.getElementById('user_pass').value;
+  //chrome.storage にuser_passとして保存する
+  chrome.storage.sync.set({
+      user_pass: user_pass
+  }, function () {
+  });
+});
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -129,4 +195,4 @@ document.addEventListener('DOMContentLoaded', function () {
     const index = arrayTabs.indexOf(this);
     document.getElementsByClassName('panel')[index].classList.add('is-show');
   };
-}, false);  
+}, false);

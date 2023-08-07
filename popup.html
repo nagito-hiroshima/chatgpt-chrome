@@ -36,14 +36,21 @@
   <div class="tab-panel">
     <!--タブ-->
     <ul class="tab-group">
-      <li class="tab tab-A is-active">ETC設定</li>
-      <li class="tab tab-B">Tab-B</li>
-      <li class="tab tab-C">Tab-C</li>
+      <li class="tab tab-A is-active">○○</li>
+      <li class="tab tab-B">ETC設定</li>
+      <li class="tab tab-C">各種設定</li>
     </ul>
 
     <!--タブを切り替えて表示するコンテンツ-->
     <div class="panel-group">
       <div class="panel tab-A is-show">
+        <h2>開発中</h2>
+        <h3>開発中...</h3>
+
+
+      </div>
+      <div class="panel tab-B">
+
         <div id="setting">
           <h2>ETC設定</h2>
           <h3>車両ナンバー</h3>
@@ -78,27 +85,30 @@
         </div>
 
       </div>
-
-
-
-      </div>
-      <div class="panel tab-B">
-        <h2>利用状況</h2>
-        <h3>通行料金</h3>
-        <h3>通行回数</h3>
-        <h3>通行時間</h3>
-        <h3>通行距離</h3>
       </div>
 
 
 
       <div class="panel tab-C">
-        <h2>お問い合わせ</h2>
-        <h3>お問い合わせ</h3>
-        <h3>お問い合わせ</h3>
-        <h3>お問い合わせ</h3>
-        <h3>お問い合わせ</h3>
+        <h2>利用状況</h2>
+        <!--選択肢-->
+        <select name="cars" id="cars">
+          <option value="btn-g1-f">1回前半</option>
+          <option value="btn-g5-f">1回後半</option>
+          <option value="btn-g2-f">2回前半</option>
+          <option value="btn-g6-f">2回後半</option>
+          <option value="btn-g3-f">3回前半</option>
+          <option value="btn-g7-f">3回後半</option>
+          <option value="btn-g4-f">4回前半</option>
+          <option value="btn-g8-f">4回後半</option>
+        </select>
 
+        <h3>通行料金</h3>
+        <input type="text" id="user_id" name="user_id" placeholder="ユーザーID" autocomplete="off">
+        <input type="password" id="user_pass" name="user_pass" placeholder="パスワード">
+        <h3>通行回数</h3>
+        <h3>通行時間</h3>
+        <h3>通行距離</h3>
       </div>
     </div>
   </div>
