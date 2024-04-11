@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://moodle2023.mc2.osakac.ac.jp/*"
+        "https://moodle2024.mc2.osakac.ac.jp/*"
       ],
       "js": [
         "content-script.js"
@@ -21,10 +21,10 @@
         "content-style.css"
       ]
     },{
-       "matches": ["https://moodle2023.mc2.osakac.ac.jp/2023/login/index.php"],
+       "matches": ["https://moodle2024.mc2.osakac.ac.jp/2023/login/index.php"],
         "js": ["login.js"]
     },{
-      "matches":["https://moodle2023.mc2.osakac.ac.jp/2023/course/*"],
+      "matches":["https://moodle2024.mc2.osakac.ac.jp/2023/course/*"],
       "js":["course.js"]
     }
   ],
