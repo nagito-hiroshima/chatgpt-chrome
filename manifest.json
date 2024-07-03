@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "高規格道路",
-  "version": "1.6.3",
+  "version": "1.8.0",
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。",
   "icons": {
     "16": "icon16.png",
@@ -20,19 +20,41 @@
       "css": [
         "content-style.css"
       ]
-    },{
-       "matches": ["https://moodle2024.mc2.osakac.ac.jp/2024/login/index.php"],
-        "js": ["login.js"]
-    },{
-      "matches":["https://moodle2024.mc2.osakac.ac.jp/2024/course/*"],
-      "js":["course.js"]
+    },
+    {
+      "matches": [
+        "https://moodle2024.mc2.osakac.ac.jp/2024/login/index.php"
+      ],
+      "js": [
+        "login.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://moodle2024.mc2.osakac.ac.jp/2024/course/*"
+      ],
+      "js": [
+        "course.js"
+      ]
+    },
+    {
+      "html": [
+        "timeTable.html"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "matches": [
+        "https://moodle2024.mc2.osakac.ac.jp/2024/*"
+      ]
     }
   ],
   "action": {
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ],
   "background": {
     "service_worker": "main.js"

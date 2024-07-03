@@ -257,3 +257,17 @@ a.btn-tag i {
   text-align: center;
   letter-spacing: 0;
 }
+
+/*横並び*/
+.flex {
+  display: flex;
+  flex-direction: row;
+  /*中央寄せ*/
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+.syousai_settei{
+  font-size: 10px;
+  width: 100px;
+}

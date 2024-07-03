@@ -10,33 +10,33 @@
 <body>
   <!--スタイルシート-->
   <link rel="stylesheet" href="./popup-css.css">
-  <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <!--ヘッダー-->
   <div id="header-car">
     <img src="icon128.png" alt="icon" width="40" height="40">
     <h1>高規格道路</h1>
   </div>
 
-  
-<div class="loader loader--style2" style="display: none;">
-  <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-  <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 25 25"
-      to="360 25 25"
-      dur="0.6s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
-</div>
+  <script src="content_script.js"></script>
+
+
+
+  <div class="loader loader--style2" style="display: none;">
+    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+      xml:space="preserve">
+      <path fill="#000"
+        d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25"
+          dur="0.6s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  </div>
 
   <div class="tab-panel">
     <!--タブ-->
     <ul class="tab-group">
-      <li class="tab tab-A is-active">○○</li>
+      <li class="tab tab-A is-active">個人予定</li>
       <li class="tab tab-B">ETC設定</li>
       <li class="tab tab-C">各種設定</li>
     </ul>
@@ -44,10 +44,35 @@
     <!--タブを切り替えて表示するコンテンツ-->
     <div class="panel-group">
       <div class="panel tab-A is-show">
-        <h2>開発中</h2>
-        <h3>開発中...</h3>
-
-
+        <h2>個人予定</h2>
+        <hr>
+        <div>
+          <h3>編集モード</h3>
+          <div class="switchArea">
+            <input type="checkbox" id="switch1">
+            <label for="switch1"><span for="switch1"></span></label>
+            <div id="swImg"></div>
+          </div>
+        </div>
+        <hr>
+        <p style="text-align: center;">詳細設定</p>
+        <div class="flex">
+          <div class="syousai_settei">自分の時間割<br>ボタンを追加</div>
+          <div class="switchArea">
+            <input type="checkbox" id="switch2">
+            <label for="switch2"><span for="switch2"></span></label>
+            <div id="swImg"></div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="syousai_settei">moodle起動時<br>自分の時間割を表示</div>
+          <div class="switchArea">
+            <input type="checkbox" id="switch3">
+            <label for="switch3"><span for="switch3"></span></label>
+            <div id="swImg"></div>
+          </div>
+        </div>
+        <p></p>
       </div>
       <div class="panel tab-B">
 
@@ -66,25 +91,24 @@
         </div>
 
 
-        <a href="https://square.link/u/ceLzBqlY" target="_blank" rel="noreferrer noopener" id="keystore"class="btn btn-tag"><i class="fas fa-shopping-cart"></i>サブスク登録</a>
+        <a href="https://square.link/u/ceLzBqlY" target="_blank" rel="noreferrer noopener" id="keystore"
+          class="btn btn-tag"><i class="fas fa-shopping-cart"></i>サブスク登録</a>
         <div id="status"></div>
-        <div id="save"><div id="saves">保存</div>
-        <div id="loader" class="loader loader--style2" style="display: none;">
-          <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-             width="30px" height="20px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-            <animateTransform attributeType="xml"
-              attributeName="transform"
-              type="rotate"
-              from="0 25 25"
-              to="360 25 25"
-              dur="0.6s"
-              repeatCount="indefinite"/>
-            </path>
-          </svg>
-        </div>
+        <div id="save">
+          <div id="saves">保存</div>
+          <div id="loader" class="loader loader--style2" style="display: none;">
+            <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="20px" viewBox="0 0 50 50"
+              style="enable-background:new 0 0 50 50;" xml:space="preserve">
+              <path fill="#000"
+                d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                  to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+              </path>
+            </svg>
+          </div>
 
-      </div>
+        </div>
       </div>
 
 
