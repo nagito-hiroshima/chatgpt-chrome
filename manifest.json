@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/*"
+        "https://moodle2024.mc2.osakac.ac.jp/2024/*"
       ],
       "js": [
         "content-script.js"
@@ -35,6 +35,16 @@
       ],
       "js": [
         "course.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/assign/view.php?id=*",
+        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/quiz/view.php?id=*",
+        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/feedback/view.php?id=*"
+      ],
+      "js": [
+        "assign.js"
       ]
     },
     {
