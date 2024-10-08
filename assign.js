@@ -95,9 +95,14 @@ button.onclick = function () {
     }
 
     console.log("enddate", enddate);
-    var startDate = enddate.getFullYear() + "" + (enddate.getMonth() + 1) + "" + enddate.getDate() + "T080000";
+    //日付の０埋め
+    /*var startDate = enddate.getFullYear() + "" + (enddate.getMonth() + 1) + "" + enddate.getDate() + "T080000";
     var endDate = enddate.getFullYear() + "" + (enddate.getMonth() + 1) + "" + enddate.getDate() + "T083000";
+*/
 
+    var startDate = enddate.getFullYear() + "" + ("0" + (enddate.getMonth() + 1)).slice(-2) + "" + ("0" + enddate.getDate()).slice(-2) + "T080000";
+    var endDate = enddate.getFullYear() + "" + ("0" + (enddate.getMonth() + 1)).slice(-2) + "" + ("0" + enddate.getDate()).slice(-2) + "T083000";
+    
     console.log("startDate", startDate);
     console.log("endDate", endDate);
     // URLを構築する際に、title、description、locationをエンコード
