@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "高規格道路",
-  "version": "1.8.0",
+  "version": "2.1.0",
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。",
   "icons": {
     "16": "icon16.png",
@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/2024/*"
+        "https://*.mc2.osakac.ac.jp/*"
       ],
       "js": [
         "content-script.js"
@@ -23,7 +23,7 @@
     },
     {
       "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/2024/login/index.php"
+        "https://*.mc2.osakac.ac.jp/*/login/index.php"
       ],
       "js": [
         "login.js"
@@ -31,7 +31,7 @@
     },
     {
       "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/2024/course/*"
+        "https://*.mc2.osakac.ac.jp/*/course/*"
       ],
       "js": [
         "course.js"
@@ -39,23 +39,23 @@
     },
     {
       "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/assign/view.php?id=*",
-        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/quiz/view.php?id=*",
-        "https://moodle2024.mc2.osakac.ac.jp/2024/mod/feedback/view.php?id=*"
+        "https://*.mc2.osakac.ac.jp/*/mod/assign/view.php?id=*",
+        "https://*.mc2.osakac.ac.jp/*/mod/quiz/view.php?id=*",
+        "https://*.mc2.osakac.ac.jp/*/mod/feedback/view.php?id=*"
       ],
       "js": [
         "assign.js"
       ]
     },
     {
+      "matches": [
+        "https://*.mc2.osakac.ac.jp/*/*"
+      ],
       "html": [
         "timeTable.html"
       ],
       "js": [
         "content_script.js"
-      ],
-      "matches": [
-        "https://moodle2024.mc2.osakac.ac.jp/2024/*"
       ]
     }
   ],
