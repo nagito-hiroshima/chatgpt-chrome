@@ -467,10 +467,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 window.onload = async function () {
     // div要素を取得
     var divElement = document.querySelector('.sample');
-    myTimeTable_create(divElement);
-    BeginSetID();
-    storage_timetable_background();
-    addCoordinatesToTable();
+
+
+
 
     try {
         const setting2Value = await read_data("setting2");
@@ -478,7 +477,43 @@ window.onload = async function () {
         if (JSON.parse(setting2Value)) {//時間割ボタンの追加
             console.log(JSON.parse(setting2Value))
             // ボタン要素を作成
-            var button = document.createElement("button");
+//            var button = document.createElement("button");
+  //          button.textContent = "時間割";
+  var button = document.createElement("img");
+  button.src ="https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png" 
+  button.style ="height:30px ;justify-content: center;align-items: center;"
+    // ボタンにhoverとactiveのスタイルを設定
+    button.addEventListener('mouseover', function () {
+        button.style.transform = 'translateY(2px)';
+    });
+    button.addEventListener('mouseout', function () {
+        button.style.transform = 'translateY(0)';
+    }
+    );
+    button.addEventListener('mousedown', function () {
+        button.style.transform = 'translateY(4px)';
+    });
+    button.addEventListener('mouseup', function () {
+        button.style.transform = 'translateY(2px)';
+    });
+
+
+            var flag = false;
+            button.addEventListener("click", function () {
+                if (flag) {
+                    removeEditor();
+                    storage_timetable_background();
+                    button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png";
+                    flag = false;
+                    return 0;
+                } else {
+                    choiceBox();
+                    button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_hozon_2.png"
+                    flag = true;
+                    return 0;
+                }
+            });
+
 
             // input要素を作成
             var input = document.createElement("input");
@@ -502,25 +537,30 @@ window.onload = async function () {
             // label要素を作成
             var label = document.createElement("label");
             label.setAttribute("for", "mytimetable");
-            label.textContent = "自分の時間割";
-            // 要素を取得
-            const targetElement = document.querySelector('.box.py-3.generalbox.info');
-            console.log(targetElement);
+            label.textContent = "自分専用";
 
-            // 要素が取得されたか確認
-            if (targetElement !== null) {
-                // 指定された要素の直前にボタン要素を挿入
-                targetElement.parentNode.insertBefore(input, targetElement);
-                targetElement.parentNode.insertBefore(label, targetElement);
+            //divElementの中にあるbrを削除
+            var divElementElement = divElement.querySelector("br");
+            if (divElementElement !== null) {
+                divElementElement.remove();
             }
-            else {
-                console.log("要素が見つかりませんでした。");
-            }
+
+            divElement.appendChild(input);
+            divElement.appendChild(label);
+            divElement.appendChild(button);
+
+
+
 
         }
     } catch (error) {
         console.error('Error reading setting2:', error);
     }
+
+    myTimeTable_create(divElement);
+    BeginSetID();
+    storage_timetable_background();
+    addCoordinatesToTable();
 
     try {
         const setting3Value = await read_data("setting3");
@@ -530,6 +570,10 @@ window.onload = async function () {
             input.checked = true;
             radio_changed(input);
         }
+
+
+
+
     } catch (error) {
         console.error('Error reading setting2:', error);
     }
