@@ -35,21 +35,24 @@ elem.forEach(function (value) {
 
 /* AdBlock */
 function reply(value) {
-    text = (value.parentElement).textContent.replace(/\n/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "")
+    text = (value.parentElement).textContent.replace(/テスト/g, "").replace("私の選択をクリアする", "").replace("問題テキスト", "").replace(/問題 \d/g, "")
+
+
     //usertext mr-1の8文字目を0に変更
     str2 = str.slice(0, 7) + "0" + str.slice(8);
     document.querySelector(".usertext.mr-1").innerHTML = str2
 
     async function getResponse() {
         
-        console.log("[Q]"+text)
+        console.log("[Q]\n"+text)
         try {
             const response = await axios.post(
                 URL,
                 {
-                    "model": "gpt-3.5-turbo",
+                    "model": "gpt-4o-mini",
                     "messages": [
-                        { "role": "user", "content": text }
+                        { "role": "user", "content": text },
+                        {"role": "system", "content": "短文で回答すること。また回答が間違えていないか確認して回答すること。"},
                     ]
                 },
                 {
@@ -76,7 +79,7 @@ function reply(value) {
             console.log("[A]"+chatgpt_response)
         } catch (error) {
 
-            console.log("[E]"+error);
+            console.log("[E]\n"+error);
         }
     }
     getResponse();
