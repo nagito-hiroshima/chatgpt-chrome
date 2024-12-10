@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "高規格道路",
-  "version": "2.1.0",
+  "version": "2.1.3",
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。",
   "icons": {
     "16": "icon16.png",
@@ -27,14 +27,6 @@
       ],
       "js": [
         "login.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://*.mc2.osakac.ac.jp/*/course/*"
-      ],
-      "js": [
-        "course.js"
       ]
     },
     {

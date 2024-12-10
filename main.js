@@ -1,3 +1,5 @@
+console.log("main.js Strted");
+
 chrome.runtime.onMessage.addListener(//拡張機能バッジ
     function (request, sender, sendResponse) {
         //拡張機能バッジ
@@ -35,3 +37,5 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({ [key]: value }, function () {
     });
   }
+
+console.log("main.js Ended");

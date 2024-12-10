@@ -1,7 +1,10 @@
+console.log("content-script.js Strted");
+
 /* 宣言 */
 const URL = "https://api.openai.com/v1/chat/completions";
 const locations = window.location.href;
-const str = document.querySelector(".usertext.mr-1").textContent;
+//const str = document.querySelector(".usertext.mr-1").textContent; エラー対策
+const str = document.querySelector(".usertext.mr-1").textContent==null?"":document.querySelector(".usertext.mr-1").textContent;
 const elem = document.querySelectorAll('.formulation');
 let str2, API_KEY, API_CHEAK;
 
@@ -107,6 +110,8 @@ document.querySelectorAll('.formulation').forEach(function (value) {
     });
 });
 
+
+console.log("content-script.js Ended");
 
 
 

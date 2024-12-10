@@ -1,5 +1,7 @@
+console.log("content_script.js Strted");
+
+
 function radio_changed(ele) {
-    console.log("aaaa");
     if (ele.checked) {
         document.getElementById('g1-f').style.display = 'none';
         document.getElementById('g2-f').style.display = 'none';
@@ -11,7 +13,6 @@ function radio_changed(ele) {
         document.getElementById('g8-f').style.display = 'none';
         document.getElementById('mytimeTable_table').style = '';
     }
-
     else {
         document.getElementById('mytimeTable_table').style.display = 'none ';
     }
@@ -109,6 +110,7 @@ function choiceBox() {
     elements.forEach(function (element) {
         // <p> 要素が見つかったかどうかのフラグ
         var foundParagraph = false;
+        var xy = 0
 
         if (element.parentElement.classList.contains('editor') || element.parentElement.classList.contains('editor_table')) {//親要素がeditor（すでに登録されている時間割だったら）///////////////////////////////////////////////////////
             var div = element.parentElement;
@@ -124,7 +126,24 @@ function choiceBox() {
                 if (button.textContent === "◯") {
                     div.style.backgroundColor = "lightsteelblue";
                     button.textContent = "✕"
-                    storage_set(generateId(element), 'true');
+                    //表のｘｙ座標を取得
+                    var cell_ = div
+                    // 親要素が<td>または<th>になるまで親要素をたどる
+                    while (cell_ && cell_.tagName !== 'TD' && cell_.tagName !== 'TH') {
+                        cell_ = cell_.parentElement;
+                    }
+
+                    // TDまたはTHが見つかった場合
+                    if (cell_ && (cell_.tagName === 'TD' || cell_.tagName === 'TH')) {
+                        // テキストからxとyの値を正規表現で抽出する
+                        var match = cell_.className.match(/x=(\d+)\sy=(\d+)/);
+                        var x = parseInt(match[1]); // xの値を数値に変換
+                        var y = parseInt(match[2]); // yの値を数値に変換
+                        console.log(String(x) + "-" + String(y))
+                        xy = String(x) + "-" + String(y)
+                    }
+
+                    storage_set(generateId(element), xy == 0 ? '0-0' : xy);
 
                 }
                 else {
@@ -171,7 +190,24 @@ function choiceBox() {
                     if (button.textContent === "◯") {
                         div.style.backgroundColor = "lightsteelblue";
                         button.textContent = "✕"
-                        storage_set(generateId(element), 'true');
+                        //表のｘｙ座標を取得
+                        var cell_ = div
+                        // 親要素が<td>または<th>になるまで親要素をたどる
+                        while (cell_ && cell_.tagName !== 'TD' && cell_.tagName !== 'TH') {
+                            cell_ = cell_.parentElement;
+                        }
+
+                        // TDまたはTHが見つかった場合
+                        if (cell_ && (cell_.tagName === 'TD' || cell_.tagName === 'TH')) {
+                            // テキストからxとyの値を正規表現で抽出する
+                            var match = cell_.className.match(/x=(\d+)\sy=(\d+)/);
+                            var x = parseInt(match[1]); // xの値を数値に変換
+                            var y = parseInt(match[2]); // yの値を数値に変換
+                            console.log(String(x) + "-" + String(y))
+                            xy = String(x) + "-" + String(y)
+                        }
+
+                        storage_set(generateId(element), xy == 0 ? '0-0' : xy);
 
                     }
                     else {
@@ -443,7 +479,10 @@ function storage_timetable_background() {//ローカルからデータを読み�
                         element.parentNode.insertBefore(element, element.parentNode.firstChild);
                         div.appendChild(nextElement);
                         myTimeTable_set(div);
-                        console.log("一致[" + value + "]")
+                        chrome.storage.local.get(value).then((data2) => {
+
+                            console.log("一致[" + value + "]  値[" + data2[value] + "]")
+                        })
                     }
                 }
             });
@@ -452,10 +491,7 @@ function storage_timetable_background() {//ローカルからデータを読み�
     }));
 }
 
-console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaa");
-
     try {
         const setting2Value = await read_data("setting3");
         document.getElementById("switch3").checked = JSON.parse(setting2Value);
@@ -477,25 +513,24 @@ window.onload = async function () {
         if (JSON.parse(setting2Value)) {//時間割ボタンの追加
             console.log(JSON.parse(setting2Value))
             // ボタン要素を作成
-//            var button = document.createElement("button");
-  //          button.textContent = "時間割";
-  var button = document.createElement("img");
-  button.src ="https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png" 
-  button.style ="height:30px ;justify-content: center;align-items: center;"
-    // ボタンにhoverとactiveのスタイルを設定
-    button.addEventListener('mouseover', function () {
-        button.style.transform = 'translateY(2px)';
-    });
-    button.addEventListener('mouseout', function () {
-        button.style.transform = 'translateY(0)';
-    }
-    );
-    button.addEventListener('mousedown', function () {
-        button.style.transform = 'translateY(4px)';
-    });
-    button.addEventListener('mouseup', function () {
-        button.style.transform = 'translateY(2px)';
-    });
+
+            var button = document.createElement("img");
+            button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png"
+            button.style = "height:30px ;justify-content: center;align-items: center;"
+            // ボタンにhoverとactiveのスタイルを設定
+            button.addEventListener('mouseover', function () {
+                button.style.transform = 'translateY(2px)';
+            });
+            button.addEventListener('mouseout', function () {
+                button.style.transform = 'translateY(0)';
+            }
+            );
+            button.addEventListener('mousedown', function () {
+                button.style.transform = 'translateY(4px)';
+            });
+            button.addEventListener('mouseup', function () {
+                button.style.transform = 'translateY(2px)';
+            });
 
 
             var flag = false;
@@ -505,11 +540,14 @@ window.onload = async function () {
                     storage_timetable_background();
                     button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png";
                     flag = false;
+
                     return 0;
                 } else {
                     choiceBox();
                     button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_hozon_2.png"
                     flag = true;
+                    //hover文字
+                    button.textContent = "保存";
                     return 0;
                 }
             });
@@ -571,10 +609,9 @@ window.onload = async function () {
             radio_changed(input);
         }
 
-
-
-
     } catch (error) {
         console.error('Error reading setting2:', error);
     }
 }
+
+console.log("content-script.js Ended");

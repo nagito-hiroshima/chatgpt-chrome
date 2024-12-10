@@ -12,8 +12,6 @@ button.className = "btn btn-info";
 button.textContent = "カレンダーに登録する";
 //変数を渡す
 button.onclick = function () {
-
-
     /*activity-datesの 開始日と終了日と時間を取得変数に格納*/
     //activity-datesの中のdivを取得
     var activity_dates = document.querySelector("div.activity-dates");
@@ -22,9 +20,10 @@ button.onclick = function () {
         var start = activity_dates.children[0].textContent;
         var end = activity_dates.children[0].textContent;
     } else {
-    var start = activity_dates.children[0].textContent;
-    var end = activity_dates.children[1].textContent;
+        var start = activity_dates.children[0].textContent;
+        var end = activity_dates.children[1].textContent;
     }
+
     //開始日と終了日のみ取得
     start = start.replace("開始済み:", "").trim();
     start = start.replace("開始予定:", "").trim();
@@ -56,15 +55,16 @@ button.onclick = function () {
 
 
     /*debag用*/
-    console.log(course_name);
-    console.log(task_name);
-    console.log(start);
-    console.log(datestring(start));
-    console.log(end);
-    console.log(datestring(end));
-    console.log(description);
-    console.log(url);
-
+    if (0) {
+        console.log(course_name);
+        console.log(task_name);
+        console.log(start);
+        console.log(datestring(start));
+        console.log(end);
+        console.log(datestring(end));
+        console.log(description);
+        console.log(url);
+    }
 
 
 
@@ -72,10 +72,16 @@ button.onclick = function () {
     var title = "[課題提出日] " + task_name + "_" + course_name;
     var location = url;
     var endtime = end.match(/(\d+):(\d+)/)[0];
-    //00:00だったら23:59にする
-    if (endtime == "00:00") {
-        endtime = "23:59";
-    }
+    var enddate = datestring(end);
+
+ 
+    
+    //1月1日0:00の場合は12月31日23:59にする
+    //時間
+    endtime = endtime == "00:00" ? "23:59" : endtime;
+    //日付
+    enddate.setDate(enddate.getHours() == 0 ? enddate.getDate() - 1 : enddate.getDate());
+
     
     // descriptionをエンコード
     var description = "【締切時間】" + endtime + "\n" +
@@ -86,14 +92,7 @@ button.onclick = function () {
         "【終了日】 " + end + "\n" +
         "【URL】 " + url;
 
-    // 開始日と終了日を生成
-    var enddate = datestring(end);
-
-    //0:00だったら一日前にする
-    if (enddate.getHours() == 0) {
-        enddate.setDate(enddate.getDate() - 1);
-    }
-
+    // GoogleカレンダーのURLを構築
     var startDate = enddate.getFullYear() + "" + ("0" + (enddate.getMonth() + 1)).slice(-2) + "" + ("0" + enddate.getDate()).slice(-2) + "T080000";
     var endDate = enddate.getFullYear() + "" + ("0" + (enddate.getMonth() + 1)).slice(-2) + "" + ("0" + enddate.getDate()).slice(-2) + "T083000";
 
@@ -103,12 +102,10 @@ button.onclick = function () {
         "&details=" + encodeURIComponent(description) +
         "&location=" + encodeURIComponent(location) +
         "&sf=true&output=xml";
-        
 
+    // Googleカレンダーを開く
     window.open(calendarUrl);
     console.log(calendarUrl);
-
-
 }
 
 div.appendChild(button);
@@ -119,10 +116,10 @@ row.appendChild(col);
 console.log("assign.js Ended");
 
 
-
+/*日付を取得してDateオブジェクトを返す*/
 function datestring(time) {
     //time = "2024年10月3日(木曜日)11:30"
-    console.log("受け取り変数", time)
+    //console.log("受け取り変数", time)
     // 正規表現を使って日付と時刻を抽出し、Dateオブジェクトを作成
     const dateParts = time.match(/(\d+)年(\d+)月(\d+)日\(.+\)(\d+):(\d+)/);
 
@@ -132,7 +129,6 @@ function datestring(time) {
         const day = parseInt(dateParts[3], 10);
         const hours = parseInt(dateParts[4], 10);
         const minutes = parseInt(dateParts[5], 10);
-
         const date = new Date(year, month, day, hours, minutes);
         return date;
     } else {

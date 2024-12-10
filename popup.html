@@ -36,45 +36,58 @@
   <div class="tab-panel">
     <!--タブ-->
     <ul class="tab-group">
-      <li class="tab tab-A is-active">個人予定</li>
-      <li class="tab tab-B">ETC設定</li>
-      <li class="tab tab-C">各種設定</li>
+      <li class="tab tab-A is-active">ツール</li>
+
+      <li class="tab tab-B">各種設定</li>
+      <li class="tab tab-C">ETC設定</li>
     </ul>
 
     <!--タブを切り替えて表示するコンテンツ-->
     <div class="panel-group">
       <div class="panel tab-A is-show">
-        <h2>個人予定</h2>
-        <hr>
-        <div>
-          <h3>編集モード</h3>
-          <div class="switchArea">
-            <input type="checkbox" id="switch1">
-            <label for="switch1"><span for="switch1"></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <hr>
-        <p style="text-align: center;">詳細設定</p>
-        <div class="flex">
-          <div class="syousai_settei">自分の時間割<br>ボタンを追加</div>
-          <div class="switchArea">
-            <input type="checkbox" id="switch2">
-            <label for="switch2"><span for="switch2"></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="syousai_settei">moodle起動時<br>自分の時間割を表示</div>
-          <div class="switchArea">
-            <input type="checkbox" id="switch3">
-            <label for="switch3"><span for="switch3"></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <p></p>
+        <h2>ショートカット</h2>
+        <button id="curriculum" class="btn btn-tag" onclick="curriculum_open()">Moodleを開く</button>
+        <p style="font-size: 8px;">My時間割に登録されている授業を表示します<br>（未登録などの場合はTOPページが表示されます）</p>
+       
+
       </div>
       <div class="panel tab-B">
+
+        <h2>個人設定</h2>
+        <div>
+          <h3>時間割</h3>
+          <div class="flex">
+            <div class="syousai_settei">moodle起動時<br>自分の時間割を表示</div>
+            <div class="switchArea">
+              <input type="checkbox" id="switch3">
+              <label for="switch3"><span for="switch3"></span></label>
+              <div id="swImg"></div>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="syousai_settei">自分の時間割<br>ボタンを追加</div>
+            <div class="switchArea">
+              <input type="checkbox" id="switch2">
+              <label for="switch2"><span for="switch2"></span></label>
+              <div id="swImg"></div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h3>ログイン情報</h3>
+        <p style="font-size: 10px; margin-top: -10px;">ID/PWはローカルでのみ保存されます。</p>
+        <input type="text" id="user_id" name="user_id" placeholder="ユーザーID" autocomplete="off">
+        <input type="password" id="user_pass" name="user_pass" placeholder="パスワード">
+
+      </div>
+
+
+
+      <div class="panel tab-C">
+
+
+
+
 
         <div id="setting">
           <h2>ETC設定</h2>
@@ -109,27 +122,16 @@
           </div>
 
         </div>
-      </div>
 
+        <style>
+          #curriculum {
+            margin-top: 10px;
+          }
+        </style>
+        <script>
 
-
-      <div class="panel tab-C">
-        <h2>利用状況</h2>
-        <!--選択肢-->
-        <select name="cars" id="cars">
-          <option value="btn-g1-f">1回前半</option>
-          <option value="btn-g5-f">1回後半</option>
-          <option value="btn-g2-f">2回前半</option>
-          <option value="btn-g6-f">2回後半</option>
-          <option value="btn-g3-f">3回前半</option>
-          <option value="btn-g7-f">3回後半</option>
-          <option value="btn-g4-f">4回前半</option>
-          <option value="btn-g8-f">4回後半</option>
-        </select>
-
-        <h3>通行情報設定</h3>
-        <input type="text" id="user_id" name="user_id" placeholder="ユーザーID" autocomplete="off">
-        <input type="password" id="user_pass" name="user_pass" placeholder="パスワード">
+        </script>
+        </style>
       </div>
     </div>
   </div>
