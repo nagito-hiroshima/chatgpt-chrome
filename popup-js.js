@@ -351,6 +351,12 @@ document.getElementById("myportal").addEventListener("click", function () {
   window.open("https://myportal.osakac.ac.jp/", '_blank');
 });
 
+document.getElementById("chatgpt").addEventListener("click", function () {
+  window.open("https://chat.openai.com/", '_blank');
+});
+document.getElementById("genemi").addEventListener("click", function () {
+  window.open("https://gemini.google.com/app", '_blank');
+});
 
 
 

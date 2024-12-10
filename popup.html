@@ -35,8 +35,10 @@
         <a href="#" id="myportal" class="myportal btn-yellow">Myportalを開く</a>
         <a href="#" id="curriculum" class="moodle btn-orange">Moodleを開く</a>
         <p style="font-size: 8px;">My時間割に登録されている授業を表示します<br>（未登録などの場合はTOPページが表示されます）</p>
-
-
+        <div class="flex" style="margin-top: -10px!important;">
+          <a href="#" id="chatgpt" class="ai ai1 btn-gray">ChatGPT</a>
+          <a href="#" id="genemi" class="ai ai2 btn-gray">Genemi</a>
+        </div>
         <div class="timestamp">
           <h2>時計</h2>
           <div id="timestamp" style="font-size: 30px; margin-top: -10px;"></div>
@@ -50,7 +52,6 @@
             margin: 10px 20px;
             display: block;
             color: #fff !important;
-
             text-decoration: none !important;
             font-weight: bold;
             font-size: 16px;
@@ -70,6 +71,45 @@
             height: 18px;
             margin: -3px 5px 0 0;
             background: url("moodle.png") no-repeat;
+            background-size: contain;
+            vertical-align: middle;
+          }
+
+          a.ai {
+            padding: 0 10px;
+            margin: 5px;
+            display: block;
+            color: #fff !important;
+            text-decoration: none !important;
+            font-weight: bold;
+            font-size: 10px;
+            border-radius: 3px;
+            text-align: center;
+            height: 40px;
+            /* 高さを統一 */
+            line-height: 40px;
+            /* テキストを中央揃え */
+          }
+
+          /* ボタンのアイコン */
+          a.ai1:before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin: -3px 5px 0 0;
+            background: url("chatgpt.png") no-repeat;
+            background-size: contain;
+            vertical-align: middle;
+          }
+             /* ボタンのアイコン */
+             a.ai2:before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin: -3px 5px 0 0;
+            background: url("genemi.png") no-repeat;
             background-size: contain;
             vertical-align: middle;
           }
@@ -122,6 +162,16 @@
 
           a.btn-yellow:hover {
             background: #7FAD1A;
+          }
+
+          
+          /* haiiiroボタン特有スタイル */
+          a.btn-gray {
+            background:  #535353;
+          }
+
+          a.btn-gray:hover {
+            background:   #A9A9A9;
           }
         </style>
 
