@@ -40,7 +40,7 @@
     /* 親要素が基点       */
     margin: auto;
     /* 中央寄せ           */
-    width: 100px;
+    width: 80px;
     /* ボタンの横幅       */
     background: #eee;
     /* デフォルト背景色   */
@@ -114,7 +114,7 @@
 
   /* === 丸部分のSTYLE（ONのとき） =========================== */
   .switchArea input[type="checkbox"]:checked~#swImg {
-    transform: translateX(67px);
+    transform: translateX(46px);
     /* 丸も右へ移動       */
     background: #78bd78;
     /* カーソルタブの背景 */
@@ -167,7 +167,7 @@
   }
 
   .panel-group {
-    height: 300px;
+    height: 320px;
     max-width: 186px;
     min-width: 186px;
     border: solid 1px #CCC;

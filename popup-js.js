@@ -1,3 +1,21 @@
+let timestable = 1;
+//時間割1
+const timetable1 = [
+  ["9:00", "10:45"],
+  ["10:55", "12:40"],
+  ["13:25", "15:10"],
+  ["15:20", "17:05"],
+  ["17:15", "19:00"]
+];
+//時間割2
+const timetable2 = [
+  ["9:30", "11:15"],
+  ["11:25", "13:10"],
+  ["13:55", "15:40"],
+  ["15:50", "17:35"],
+  ["17:45", "19:30"]
+];
+
 //保存ボタンが押されたら
 //chrome.storageにnkeyとncheakを保存する
 //nkeyはAPIキー
@@ -99,16 +117,24 @@ function save_options() {
 //nkey-inputとnkey-checkboxにそれぞれ代入する
 function restore_options() {
   //chrome.storageからnkeyとncheakを取得する
-  chrome.storage.sync.get({ "nkey": "", "ncheak": "", "user_id": "", "user_pass": "" }, function (items) {
+  chrome.storage.sync.get({ "nkey": "", "ncheak": "", "user_id": "", "user_pass": "", "campus": "" }, function (items) {
     //nkey-inputとnkey-checkboxにそれぞれ代入する
     document.getElementById('nkey-input').value = items.nkey;
     document.getElementById('nkey-checkbox').checked = items.ncheak;
-   
+
 
     //user_idにuser_idに入っている値を代入
     document.getElementById("user_id").value = items.user_id;
     //user_passにuser_passに入っている値を代入
     document.getElementById("user_pass").value = items.user_pass;
+
+    document.getElementById("campus_select").value = items.campus;
+
+    if(items.campus == 1){
+      timestable = timetable1;
+    }else{
+      timestable = timetable2;
+    }
 
     //nkeyが空だったら
     if (items.nkey != "") {
@@ -123,7 +149,10 @@ function restore_options() {
 }
 
 //popup.htmlが読み込まれたら
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', function () {
+  restore_options();
+});
+
 //保存ボタンが押されたら
 document.getElementById('save').addEventListener('click',
   save_options);
@@ -141,6 +170,7 @@ document.getElementById('nkey-input').addEventListener('selectstart', function (
 
 
 
+
 /*user_idが変更されたら*/
 document.getElementById('user_id').addEventListener('change', function () {
   var user_id = document.getElementById('user_id').value;
@@ -150,6 +180,20 @@ document.getElementById('user_id').addEventListener('change', function () {
   }, function () {
   });
 });
+
+
+/*campusが変更されたら*/
+document.getElementById('campus_select').addEventListener('change', function () {
+  var campus = document.getElementById('campus_select').value;
+  //chrome.storage にcampusとして保存する
+  chrome.storage.sync.set({
+    campus: campus
+  }, function () {
+  });
+  //ページをリロード
+  location.reload();
+}
+);
 
 /*user_passが変更されたら*/
 document.getElementById('user_pass').addEventListener('change', function () {
@@ -191,6 +235,7 @@ document.getElementById("switch2").addEventListener("change", function () {
 document.getElementById("switch3").addEventListener("change", function () {
   storage_set("setting3", document.getElementById("switch3").checked)
 });
+
 
 
 
@@ -238,21 +283,6 @@ function storage_set(key, value) {
 
 
 document.getElementById("curriculum").addEventListener("click", function () {
-  /*時間割1
-  1限目 9:00-10:45
-  2限目 10:55-12:40
-  3限目 13:25-15:10
-  4限目 15:20-17:05
-  5限目 17:15-19:00
-
-  時間割2
-  1限目 9:30-11:15
-  2限目 11:25-13:10
-  3限目 13:55-15:40
-  4限目 15:50-17:35
-  5限目 17:45-19:30
-  */
-
   //現在の時刻を取得
   const now = new Date();
   //曜日を取得
@@ -262,55 +292,118 @@ document.getElementById("curriculum").addEventListener("click", function () {
   //分を取得
   const min = now.getMinutes();
 
-  //時間割1
-  const timetable1 = [
-    ["9:00", "10:45"],
-    ["10:55", "12:40"],
-    ["13:25", "15:10"],
-    ["15:20", "17:05"],
-    ["17:15", "19:00"]
-  ];
-  //時間割2
-  const timetable2 = [
-    ["9:30", "11:15"],
-    ["11:25", "13:10"],
-    ["13:55", "15:40"],
-    ["15:50", "17:35"],
-    ["17:45", "19:30"]
-  ];
-
-  let timesetting = 0;
-  let code="0-0"
-
-  const timestable = timesetting == 0 ? timetable1 : timetable2;
+  let code = "0-0"
 
   //現在の時間が時間割1のどこに該当するかを調べる
   for (let i = 0; i < timestable.length; i++) {
     //時間割の開始時間と終了時間を取得
     const start = timestable[i][0].split(":");
     const end = timestable[i][1].split(":");
-    
+
     //現在の時間が時間割1のどこに該当するかを調べる(5分前から5分後まで)
-    if (hour >= start[0] && hour <= end[0] && min >= start[1] - 5 && min <= end[1] + 5) {
+    if (isTimeInRange(hour, min, start, end)) {
       //時間割1のｎ曜日i限目に該当する
-      code = week + "-" + i;
+      code = week + "-" + (i+1);
       console.log("時間割1の" + week + "曜日" + (i + 1) + "限目");
-      
+
     }
   }
-  console.log("該当なし")
 
   chrome.storage.local.get(null, ((data) => {
     for (let value in data) {
       console.log(value + ":" + data[value]);
-      if(data[value]==code){
-        console.error("該当あり")
-        window.open("https://moodle2024.mc2.osakac.ac.jp/2024/course/view.php?id="+value, '_blank');
+      if (data[value] == code) {
+        console.log("該当あり")
+        window.open("https://moodle2024.mc2.osakac.ac.jp/2024/course/view.php?id=" + value, '_blank');
         return;
       }
     }
     window.open("https://moodle2024.mc2.osakac.ac.jp/2024/", '_blank');
   }))
 
-  
+
 });
+
+
+function isTimeInRange(hour, min, start, end) {
+  const currentTime = hour * 60 + min; // 現在時刻を分単位に変換
+  const startTime = start[0] * 60 + start[1]; // 開始時間を分単位に変換
+  const endTime = end[0] * 60 + end[1]; // 終了時間を分単位に変換
+
+  // 時間をまたぐ場合 (例: 13:50 ～ 14:10)
+  if (startTime > endTime) {
+    return (
+      currentTime >= startTime - 5 || // 開始時間から早めた範囲
+      currentTime <= endTime + 5     // 終了時間を遅らせた範囲
+    );
+  }
+  // 時間がまたがない場合 (例: 13:50 ～ 13:55)
+  else {
+    return (
+      currentTime >= startTime - 5 && // 開始時間から早めた範囲
+      currentTime <= endTime + 5     // 終了時間を遅らせた範囲
+    );
+  }
+}
+
+
+document.getElementById("myportal").addEventListener("click", function () {
+  window.open("https://myportal.osakac.ac.jp/", '_blank');
+});
+
+
+
+
+
+
+
+
+// タイムスタンプ
+function getNow() {
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const mon = now.getMonth() + 1; // 1を足すこと
+  const day = now.getDate();
+  const hour = now.getHours();
+  const min = now.getMinutes();
+  const sec = now.getSeconds();
+
+  // 現在時刻を表示用にフォーマット
+  const currentTime = `${hour}:${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  document.getElementById("timestamp").textContent = currentTime;
+
+  let currentPeriod = null; // 現在の時間帯を指すインデックス
+  let remainingMinutes = null; // 残り時間
+
+  // 現在時刻を分単位に変換
+  const currentMinutes = hour * 60 + min;
+
+  // 現在の時間が timestable のどの時間帯に該当するかチェック
+  for (let i = 0; i < timestable.length; i++) {
+    const [start, end] = timestable[i];
+    const [startHour, startMin] = start.split(":").map(Number);
+    const [endHour, endMin] = end.split(":").map(Number);
+
+    const startMinutes = startHour * 60 + startMin;
+    const endMinutes = endHour * 60 + endMin;
+
+    if (currentMinutes >= startMinutes && currentMinutes <= endMinutes) {
+      currentPeriod = i; // 現在の時間帯
+      remainingMinutes = endMinutes - currentMinutes; // 終了までの残り時間
+      break;
+    }
+  }
+
+  // 出力用
+  if (currentPeriod !== null) {
+    document.getElementById("timestamp2").textContent =
+      `${currentPeriod + 1}限目 (${timestable[currentPeriod][0]} - ${timestable[currentPeriod][1]})`;
+    document.getElementById("timestamp3").textContent = `あと ${remainingMinutes} 分`;
+  } else {
+    document.getElementById("timestamp2").textContent = "現在、授業時間外です";
+    document.getElementById("timestamp3").textContent = "";
+  }
+}
+
+setInterval(getNow, 1000);
