@@ -20,36 +20,36 @@ const departments = {
     "HT": { id: 115, name: "情報学科" }
 };
 setTimeout(function () {
-//IDを取得 .usertext mr-1
-var usertext = document.querySelector(".usertext.mr-1");
-if (usertext) {
-    ID = usertext.textContent;
-    ID = ID.split(" ")[0];
+    //ユーザーID取得
+    var usertext = document.querySelector(".usertext.mr-1");
+    if (usertext) {
+        //ID取得
+        ID = usertext.textContent;
+        ID = ID.split(" ")[0];
+        
+        const departmentKey = ID.substring(0, 2);
+        const result = departments[departmentKey];
+        console.log(result); // { id: 124, name: "情報工学科" }
+        
+        //usernavigationの一番上に追加
+        var usernavigation = document.querySelector("#usernavigation");
+        var div = document.createElement("div");
+        div.className = "popover-region-toggle nav-link icon-no-margin";
 
-    const departmentKey = ID.substring(0, 2);
-    const result = departments[departmentKey];
-    console.log(result); // { id: 124, name: "情報工学科" }
-    console.log(result.id); // 124
-
-    //usernavigationの一番上に追加
-    var usernavigation = document.querySelector("#usernavigation");
-    var div = document.createElement("div");
-    div.className = "popover-region-toggle nav-link icon-no-margin";
 
 
-
-    var i = document.createElement("i");
-    i.className = "icon fa fa-home fa-fw";
-    i.title = "所属コースを表示";
-    i.role = "img";
-    i.ariaLabel = "所属コースを表示";
-    //押したらURLに遷移
-    i.onclick = function () {
-        window.location.href = "https://moodle2024.mc2.osakac.ac.jp/2024/course/index.php?categoryid=" + result.id;
-    };
-    div.appendChild(i);
-    usernavigation.insertBefore(div, usernavigation.firstChild);
-}
+        var i = document.createElement("i");
+        i.className = "icon fa fa-home fa-fw";
+        i.title = "所属コースを表示";
+        i.role = "img";
+        i.ariaLabel = "所属コースを表示";
+        //押したらURLに遷移
+        i.onclick = function () {
+            window.location.href = "https://moodle2024.mc2.osakac.ac.jp/2024/course/index.php?categoryid=" + result.id;
+        };
+        div.appendChild(i);
+        usernavigation.insertBefore(div, usernavigation.firstChild);
+    }
 }, 100);
 
 console.log("button.js Ended");
