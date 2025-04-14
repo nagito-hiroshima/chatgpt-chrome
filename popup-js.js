@@ -314,11 +314,11 @@ document.getElementById("curriculum").addEventListener("click", function () {
       console.log(value + ":" + data[value]);
       if (data[value] == code) {
         console.log("該当あり")
-        window.open("https://moodle2024.mc2.osakac.ac.jp/2024/course/view.php?id=" + value, '_blank');
+        window.open("https://moodle2025.mc2.osakac.ac.jp/2025/course/view.php?id=" + value, '_blank');
         return;
       }
     }
-    window.open("https://moodle2024.mc2.osakac.ac.jp/2024/", '_blank');
+    window.open("https://moodle2025.mc2.osakac.ac.jp/2025/", '_blank');
   }))
 
 

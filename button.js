@@ -45,7 +45,7 @@ setTimeout(function () {
         i.ariaLabel = "所属コースを表示";
         //押したらURLに遷移
         i.onclick = function () {
-            window.location.href = "https://moodle2024.mc2.osakac.ac.jp/2024/course/index.php?categoryid=" + result.id;
+            window.location.href = "https://moodle2025.mc2.osakac.ac.jp/2025/course/index.php?categoryid=" + result.id;
         };
         div.appendChild(i);
         usernavigation.insertBefore(div, usernavigation.firstChild);
