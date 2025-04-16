@@ -378,6 +378,7 @@ function BeginSetID() {//最初にすべてのタイトルにIDを割り当て�
 };
 
 function generateId(element) {
+    console.error(element);
     // element内のすべての<a>要素を取得します
     const links = element.querySelectorAll('a');
     var link = "";
@@ -386,17 +387,17 @@ function generateId(element) {
         link = links[i];
         // href属性からidを取得します
         const href = link.getAttribute('href');
-        // href属性が"/2024/course/view.php?id="で始まるか確認します
-        if (href.startsWith('/2024/course/view.php?id=')) {
-            // href属性からidの部分を抽出します
-            const id = href.substring('/2024/course/view.php?id='.length);
-            // idが数字であるかチェックします
+        //https://moodle2025.mc2.osakac.ac.jp/2025/course/view.php?id=606
+        //からIDを取得します
+        if (href.startsWith('/2025/course/view.php?id=')) {
+            const id = href.substring('/2025/course/view.php?id='.length);
             if (!isNaN(id)) {
-                return parseInt(id); // 数字のidを返します
+                return parseInt("9999" + id); // 数字のidを返します
             }
+    
         }
-        else if (href.startsWith('https://moodlestack2024.mc2.osakac.ac.jp/2024/course/view.php?id=')) {
-            const id = href.substring('https://moodlestack2024.mc2.osakac.ac.jp/2024/course/view.php?id='.length);
+        else if (href.startsWith('https://moodlestack2025.mc2.osakac.ac.jp/2025/course/view.php?id=')) {
+            const id = href.substring('https://moodlestack2025.mc2.osakac.ac.jp/2025/course/view.php?id='.length);
             // idが数字であるかチェックします
             if (!isNaN(id)) {
                 return parseInt("9999" + id); // 数字のidを返します

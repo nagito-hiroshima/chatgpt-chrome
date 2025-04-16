@@ -303,21 +303,24 @@ document.getElementById("curriculum").addEventListener("click", function () {
     //現在の時間が時間割1のどこに該当するかを調べる(5分前から5分後まで)
     if (isTimeInRange(hour, min, start, end)) {
       //時間割1のｎ曜日i限目に該当する
-      code = week + "-" + (i+1);
-      console.log("時間割1の" + week + "曜日" + (i + 1) + "限目");
+      code = week + "-" + (i);
+      console.log("時間割1の" + week + "曜日" + (i ) + "限目");
 
     }
   }
 
+ 
   chrome.storage.local.get(null, ((data) => {
     for (let value in data) {
       console.log(value + ":" + data[value]);
       if (data[value] == code) {
         console.log("該当あり")
-        window.open("https://moodle2025.mc2.osakac.ac.jp/2025/course/view.php?id=" + value, '_blank');
+        window.open(value, '_blank');
         return;
       }
     }
+    //localStorageの学科IDを取得
+    console.log("該当なし")   
     window.open("https://moodle2025.mc2.osakac.ac.jp/2025/", '_blank');
   }))
 
