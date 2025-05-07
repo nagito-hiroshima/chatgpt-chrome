@@ -15,6 +15,8 @@ chrome.storage.sync.get(['user_id', 'user_pass'], function (value) {
             document.getElementById('loginbtn').click();
         } else if (document.getElementById('loginerrormessage').innerHTML != "不正なログインです。再度ログインしてください。") {
             document.getElementById('loginbtn').click();
+        } else if (document.getElementById('loginerrormessage').innerHTML == "あなたのセッションがタイムアウトしました。再度ログインしてください。") {
+            document.getElementById('loginbtn').click();
         }
     }
 });
