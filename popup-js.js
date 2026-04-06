@@ -321,7 +321,7 @@ document.getElementById("curriculum").addEventListener("click", function () {
     }
     //localStorageの学科IDを取得
     console.log("該当なし")   
-    window.open("https://moodle2025.mc2.osakac.ac.jp/2025/", '_blank');
+    window.open("https://moodle2026.mc2.osakac.ac.jp/2026/", '_blank');
   }))
 
 
