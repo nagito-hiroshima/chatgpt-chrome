@@ -2,20 +2,71 @@ console.log("content_script.js Strted");
 
 
 function radio_changed(ele) {
-    if (ele.checked) {
-        document.getElementById('g1-f').style.display = 'none';
-        document.getElementById('g2-f').style.display = 'none';
-        document.getElementById('g3-f').style.display = 'none';
-        document.getElementById('g4-f').style.display = 'none';
-        document.getElementById('g5-f').style.display = 'none';
-        document.getElementById('g6-f').style.display = 'none';
-        document.getElementById('g7-f').style.display = 'none';
-        document.getElementById('g8-f').style.display = 'none';
-        document.getElementById('mytimeTable_table').style = '';
+    syncTabActiveState();
+
+    var ids = [
+        'g1-f', 'g1-f-intensive',
+        'g2-f', 'g2-f-intensive',
+        'g3-f', 'g3-f-intensive',
+        'g4-f', 'g4-f-intensive',
+        'g5-f', 'g5-f-intensive',
+        'g6-f', 'g6-f-intensive',
+        'g7-f', 'g7-f-intensive',
+        'g8-f', 'g8-f-intensive'
+    ];
+    var myTable = document.getElementById('mytimeTable_table');
+
+    var isMyTimetableSelected = !!(ele && ele.id === 'mytimetable' && ele.checked);
+
+    if (isMyTimetableSelected) {
+        ele.focus();
+        ele.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        ids.forEach(function (id) {
+            var target = document.getElementById(id);
+            if (target) {
+                target.style.display = 'none';
+            }
+        });
+        if (myTable) {
+            myTable.style.display = '';
+        }
+        return;
     }
-    else {
-        document.getElementById('mytimeTable_table').style.display = 'none ';
+
+    if (myTable) {
+        myTable.style.display = 'none';
     }
+
+    var activeSemesterInput = document.querySelector('input[id^="btn-g"][id$="-f"][name="oecu-tab"]:checked');
+    if (!activeSemesterInput) {
+        activeSemesterInput = document.getElementById('btn-g1-f');
+    }
+    var activeValue = activeSemesterInput ? activeSemesterInput.value : '1';
+    var activeTableId = 'g' + activeValue + '-f';
+    var activeIntensiveId = activeTableId + '-intensive';
+
+    ids.forEach(function (id) {
+        var target = document.getElementById(id);
+        if (!target) {
+            return;
+        }
+        if (id === activeTableId || id === activeIntensiveId) {
+            target.style.display = '';
+        } else {
+            target.style.display = 'none';
+        }
+    });
+}
+
+function syncTabActiveState() {
+    var radios = document.querySelectorAll('input[name="oecu-tab"]');
+    radios.forEach(function (radio) {
+        var label = document.querySelector('label[for="' + radio.id + '"]');
+        if (!label) {
+            return;
+        }
+        label.className = radio.checked ? 'active' : '';
+    });
 }
 
 // content_script.js内で
@@ -50,9 +101,7 @@ function removeEditor() {
 
     elements = document.querySelectorAll(".editor_button");
     elements.forEach(function (element) {
-        var parentElem = element;
-        // 親要素から最初の子要素を取得して親要素の上に子要素を移動
-        parentElem.parentNode.removeChild(parentElem);
+        element.parentNode.removeChild(element);
     });
     var elements = document.querySelectorAll(".editor_table");
     elements.forEach(function (element) {
@@ -61,9 +110,10 @@ function removeEditor() {
         parentElem.parentNode.removeChild(parentElem);
     });
 
-    elements = document.querySelectorAll(".editor_button");
+    elements = document.querySelectorAll('.course-item.editor-selected');
     elements.forEach(function (element) {
-        element.parentNode.removeChild(parentElem);
+        element.classList.remove('editor-selected');
+        element.style.backgroundColor = '';
     });
 }
 function GenerateSaveButton() {
@@ -100,14 +150,86 @@ function GenerateSaveButton() {
     document.body.appendChild(button);
 }
 
+function extractCourseIdFromElement(element) {
+    if (!element) {
+        return null;
+    }
+
+    var link = element.querySelector('a[href*="course/view.php?id="]');
+    if (!link) {
+        return null;
+    }
+
+    var href = link.getAttribute('href') || '';
+    var match = href.match(/course\/view\.php\?id=(\d+)/);
+    if (!match) {
+        return null;
+    }
+
+    return parseInt("9999" + match[1]);
+}
+
+function getAllCourseElements() {
+    var elements = document.querySelectorAll('.main_font, .course-item');
+    return Array.from(elements).filter(function (element) {
+        return !element.closest('#mytimeTable_table');
+    });
+}
+
+function setCourseItemSelected(item, selected) {
+    item.classList.toggle('editor-selected', selected);
+    item.style.backgroundColor = selected ? 'lightsteelblue' : '';
+}
+
+function attachCourseItemEditor(item) {
+    if (!item || item.querySelector('.editor_button')) {
+        return;
+    }
+
+    var courseId = generateId(item);
+    if (!courseId) {
+        return;
+    }
+
+    item.style.position = 'relative';
+    var button = document.createElement('button');
+    button.textContent = '◯';
+    button.setAttribute('class', 'editor_button');
+    button.style.cssText = 'position:absolute;top:6px;right:6px;z-index:2;';
+    item.appendChild(button);
+
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var isSelected = button.textContent === '◯';
+        if (isSelected) {
+            setCourseItemSelected(item, true);
+            button.textContent = '✕';
+            storage_set(courseId, '0-0');
+            storage_timetable_background();
+        } else {
+            setCourseItemSelected(item, false);
+            button.textContent = '◯';
+            storage_remove(courseId);
+            storage_timetable_background();
+        }
+    });
+}
+
 
 function choiceBox() {
 
     // クラス名が "main_font" のすべての要素を取得
-    var elements = document.querySelectorAll('.main_font');
+    var elements = getAllCourseElements();
 
     // 取得した要素ごとに処理を行う
     elements.forEach(function (element) {
+        if (element.classList.contains('course-item')) {
+            attachCourseItemEditor(element);
+            return;
+        }
+
         // <p> 要素が見つかったかどうかのフラグ
         var foundParagraph = false;
         var xy = 0
@@ -244,73 +366,61 @@ function myTimeTable_create(element) {
     // テーブル要素を作成
     var table = document.createElement("table");
     table.setAttribute("id", "mytimeTable_table")
-    table.setAttribute("class", "jmx");
-    var day = ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日"];
+    table.setAttribute("class", "timetable");
+    table.style.marginTop = "16px";
+    var day = ["月", "火", "水", "木", "金"];
     // tbody要素を作成
     var tbody = document.createElement("tbody");
 
+    // ヘッダ行
+    var row = document.createElement("tr");
+    row.setAttribute("class", "header-row");
+    var cell = document.createElement("th");
+    cell.setAttribute("class", "period-header");
+    row.appendChild(cell);
+    for (var d = 0; d < 5; d++) {
+        cell = document.createElement("th");
+        cell.setAttribute("class", "day-header");
+        cell.textContent = day[d];
+        row.appendChild(cell);
+    }
+    tbody.appendChild(row);
 
-    // 5行5列のセルを作成してテーブルに追加
-    for (var i = 0; i < 7; i++) {
-        // 行を作成
-        var row = document.createElement("tr");
+    // 1-7限
+    for (var i = 1; i <= 7; i++) {
+        row = document.createElement("tr");
+        cell = document.createElement("td");
+        cell.setAttribute("class", "period-cell");
+        cell.textContent = String(i);
+        row.appendChild(cell);
 
-        for (var j = 0; j < 6; j++) {
-
-            var text = document.createTextNode("");
-            if (j === 0) {
-                //縦列最初
-                var cell = document.createElement("th");
-                cell.setAttribute("class", "jmxt");
-                if (i !== 0) {
-                    var div = document.createElement("div");
-                    div.setAttribute("class", "vertical_text");
-                    div.textContent = (i + "限目");
-                    cell.appendChild(div);
-                }
-            }
-            else if ((i * 6) + (j + 1) <= 6) {
-                //横列最初
-                var cell = document.createElement("th");
-                cell.setAttribute("class", "jmx");
-                text = document.createTextNode(day[(i * 6) + (j + 1) - 2]);
-
-            }
-            else {
-                // 列を作成
-                var cell = document.createElement("td");
-                cell.setAttribute("class", "jmx");
-                //セルにテキストを追加
-                //text = document.createTextNode((i * 6) + (j + 1));
-            }
-
-            cell.appendChild(text);
-
-            // 列を行に追加
-            row.appendChild(cell);
+        for (var j = 0; j < 5; j++) {
+            var courseCell = document.createElement("td");
+            courseCell.setAttribute("class", "course-cell");
+            row.appendChild(courseCell);
         }
 
-        // 行をテーブルに追加
         tbody.appendChild(row);
-
-
-
-
     }
+
+    // 集中授業ヘッダ
     row = document.createElement("tr");
-    var cell = document.createElement("th");
-    cell.setAttribute("class", "jmx");
+    row.setAttribute("class", "header-row");
+    cell = document.createElement("th");
+    cell.setAttribute("class", "intensive-header");
     cell.colSpan = "6";
-    text = document.createTextNode("集中授業");
-    cell.appendChild(text);
+    cell.textContent = "集中授業";
     row.appendChild(cell);
     tbody.appendChild(row);
 
+    // 集中授業内容行
     row = document.createElement("tr");
     cell = document.createElement("td");
-    cell.setAttribute("class", "jmx");
+    cell.setAttribute("class", "course-cell");
     cell.colSpan = "6";
-    // 列を行に追加
+    var intensiveGrid = document.createElement("div");
+    intensiveGrid.setAttribute("class", "intensive-grid");
+    cell.appendChild(intensiveGrid);
     row.appendChild(cell);
     tbody.appendChild(row);
 
@@ -323,6 +433,9 @@ function myTimeTable_create(element) {
 }
 function myTimeTable_set(element) {
     var myTimeTable = document.getElementById("mytimeTable_table");
+    if (!myTimeTable) {
+        return;
+    }
 
     var cell_ = element
     // 親要素が<td>または<th>になるまで親要素をたどる
@@ -332,29 +445,52 @@ function myTimeTable_set(element) {
 
     // TDまたはTHが見つかった場合
     if (cell_ && (cell_.tagName === 'TD' || cell_.tagName === 'TH')) {
-        // テキストからxとyの値を正規表現で抽出する
-        var match = cell_.className.match(/x=(\d+)\sy=(\d+)/);
-        var x = parseInt(match[1]); // xの値を数値に変換
-        var y = parseInt(match[2]); // yの値を数値に変換
-        //console.log(String(x) + "-" + String(y))
+        var sourceTable = cell_.closest('table');
+        var isIntensiveCourse = !!(sourceTable && sourceTable.id && sourceTable.id.endsWith('-intensive'));
+
+        var x = 0;
+        var y = 9; // 集中授業の内容行
+
+        if (!isIntensiveCourse) {
+            // テキストからxとyの値を正規表現で抽出する
+            var match = cell_.className.match(/x=(\d+)\sy=(\d+)/);
+            if (!match) {
+                return;
+            }
+            x = parseInt(match[1]); // xの値を数値に変換
+            y = parseInt(match[2]); // yの値を数値に変換
+        }
+
         var timecell = myTimeTable.querySelector('.x\\=' + x + '.y\\=' + y);
-        //console.log(timecell)
         var clone_element = element.cloneNode(true);
         clone_element.style = ""
-        clone_element.setAttribute("class", "editor_table")
+        clone_element.setAttribute("class", isIntensiveCourse ? "editor_table editor_table_intensive" : "editor_table")
         if (timecell !== null) {
-            timecell.appendChild(clone_element);
+            if (isIntensiveCourse) {
+                var grid = timecell.querySelector('.intensive-grid');
+                if (grid) {
+                    grid.appendChild(clone_element);
+                } else {
+                    timecell.appendChild(clone_element);
+                }
+            } else {
+                timecell.appendChild(clone_element);
+            }
 
         }
         else {
-            var x = 0; // xの値を数値に変換
-            var y = 8; // yの値を数値に変換
-            //console.log(String(x) + "-" + String(y))
-            var timecell = myTimeTable.querySelector('.x\\=' + x + '.y\\=' + y);
-            //console.log(timecell)
-            var clone_element = element.cloneNode(true);
+            x = 0;
+            y = 9;
+            timecell = myTimeTable.querySelector('.x\\=' + x + '.y\\=' + y);
+            clone_element = element.cloneNode(true);
+            clone_element.setAttribute("class", "editor_table editor_table_intensive")
             if (timecell !== null) {
-                timecell.appendChild(clone_element);
+                var fallbackGrid = timecell.querySelector('.intensive-grid');
+                if (fallbackGrid) {
+                    fallbackGrid.appendChild(clone_element);
+                } else {
+                    timecell.appendChild(clone_element);
+                }
 
             }
         }
@@ -367,8 +503,8 @@ function myTimeTable_set(element) {
 }
 
 function BeginSetID() {//最初にすべてのタイトルにIDを割り当てます
-    // クラス名が "main_font" のすべての要素を取得
-    var elements = document.querySelectorAll('.main_font');
+    // 旧レイアウトと新レイアウトの授業要素にIDを割り当てます
+    var elements = getAllCourseElements();
 
     // 取得した要素ごとに処理を行う
     elements.forEach(function (element) {
@@ -378,36 +514,7 @@ function BeginSetID() {//最初にすべてのタイトルにIDを割り当て�
 };
 
 function generateId(element) {
-    console.error(element);
-    // element内のすべての<a>要素を取得します
-    const links = element.querySelectorAll('a');
-    var link = "";
-    // リンクをループして、idを取得します
-    for (let i = 0; i < links.length; i++) {
-        link = links[i];
-        // href属性からidを取得します
-        const href = link.getAttribute('href');
-        //https://moodle2026.mc2.osakac.ac.jp/2026/course/view.php?id=606
-        //からIDを取得します
-        if (href.startsWith('/2026/course/view.php?id=')) {
-            const id = href.substring('/2026/course/view.php?id='.length);
-            if (!isNaN(id)) {
-                return parseInt("9999" + id); // 数字のidを返します
-            }
-    
-        }
-        else if (href.startsWith('https://moodlestack2026.mc2.osakac.ac.jp/2026/course/view.php?id=')) {
-            const id = href.substring('https://moodlestack2026.mc2.osakac.ac.jp/2026/course/view.php?id='.length);
-            // idが数字であるかチェックします
-            if (!isNaN(id)) {
-                return parseInt("9999" + id); // 数字のidを返します
-            }
-        }
-    }
-
-    // 数字のidが見つからなかった場合
-    console.log(link);
-    return link;
+    return extractCourseIdFromElement(element);
 }
 function addCoordinatesToTable() { //すべてのtableを取得してx,y座標を設定
     var tables = document.getElementsByTagName("table");
@@ -443,17 +550,65 @@ function read_data(key) {
     });
 }
 
+function parseBooleanSetting(value, defaultValue) {
+    if (value === undefined || value === null || value === "") {
+        return defaultValue;
+    }
+    if (typeof value === 'boolean') {
+        return value;
+    }
+    if (typeof value === 'string') {
+        if (value === 'true') {
+            return true;
+        }
+        if (value === 'false') {
+            return false;
+        }
+    }
+    return defaultValue;
+}
+
 
 
 function storage_timetable_background() {//ローカルからデータを読み取り保存されたデータを下に時間割の背景色を変更
+    var myTable = document.getElementById('mytimeTable_table');
+    if (myTable) {
+        var clones = myTable.querySelectorAll('.editor_table');
+        clones.forEach(function (clone) {
+            clone.parentNode.removeChild(clone);
+        });
+    }
+
+    var selectedItems = document.querySelectorAll('.course-item.editor-selected');
+    selectedItems.forEach(function (item) {
+        setCourseItemSelected(item, false);
+        var btn = item.querySelector('.editor_button');
+        if (btn) {
+            btn.textContent = '◯';
+        }
+    });
+
     chrome.storage.local.get(null, ((data) => {
         for (let value in data) {
+            if (!String(value).startsWith('9999')) {
+                continue;
+            }
             //console.log(value + data[value]);
 
-            // クラス名が "main_font" のすべての要素を取得
-            var elements = document.querySelectorAll('.main_font');
+            var elements = getAllCourseElements();
             elements.forEach(function (element) {
                 if (element.id === value) {
+
+                    if (element.classList.contains('course-item')) {
+                        setCourseItemSelected(element, true);
+                        attachCourseItemEditor(element);
+                        var itemButton = element.querySelector('.editor_button');
+                        if (itemButton) {
+                            itemButton.textContent = '✕';
+                        }
+                        myTimeTable_set(element);
+                        return;
+                    }
 
 
                     // 次の要素へ移動
@@ -502,18 +657,60 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 window.onload = async function () {
-    // div要素を取得
-    var divElement = document.querySelector('.sample');
+    // コントロール挿入先とテーブル挿入先を分離
+    var controlsHost = null;
+    var g1Input = document.getElementById('btn-g1-f');
+    if (g1Input) {
+        controlsHost = g1Input.closest('.tab-buttons');
+    }
+    if (!controlsHost) {
+        controlsHost = document.querySelector('.sample');
+    }
+    if (!controlsHost) {
+        controlsHost = document.querySelector('.tab-buttons');
+    }
 
+    var tableHost = document.querySelector('.timetable-container');
+    if (!tableHost) {
+        tableHost = controlsHost;
+    }
 
+    var enableMyTimetableFeature = true;
+    try {
+        const setting3Value = await read_data("setting3");
+        enableMyTimetableFeature = parseBooleanSetting(setting3Value, true);
+    } catch (error) {
+        console.error('Error reading setting3:', error);
+    }
 
+    // 「自分の時間割を表示」がOFFなら何もしない
+    if (!enableMyTimetableFeature) {
+        var oldInput = document.getElementById('mytimetable');
+        var oldLabel = document.getElementById('label-mytimetable');
+        var oldTable = document.getElementById('mytimeTable_table');
+        if (oldInput) {
+            oldInput.remove();
+        }
+        if (oldLabel) {
+            oldLabel.remove();
+        }
+        if (oldTable) {
+            oldTable.remove();
+        }
+        return;
+    }
 
+    var enableEditorButton = true;
     try {
         const setting2Value = await read_data("setting2");
-        console.log(JSON.parse(setting2Value))
-        if (JSON.parse(setting2Value)) {//時間割ボタンの追加
-            console.log(JSON.parse(setting2Value))
-            // ボタン要素を作成
+        enableEditorButton = parseBooleanSetting(setting2Value, true);
+    } catch (error) {
+        console.error('Error reading setting2:', error);
+    }
+
+    try {
+        // 時間割UIを追加
+        // ボタン要素を作成
 
             var button = document.createElement("img");
             button.src = "https://kotonohaworks.com/free-icons/wp-content/uploads/kkrn_icon_henshuu_6.png"
@@ -557,7 +754,7 @@ window.onload = async function () {
             // input要素を作成
             var input = document.createElement("input");
             input.setAttribute("type", "radio");
-            input.setAttribute("name", "oecu");
+            input.setAttribute("name", "oecu-tab");
             input.setAttribute("id", "mytimetable");
             input.setAttribute("value", "mytimetable");
             input.addEventListener("change", function () {
@@ -567,47 +764,53 @@ window.onload = async function () {
             // ボタンにクリックイベントを追加
             for (var i = 1; i < 9; i++) {
                 var ele = document.getElementById('btn-g' + i + '-f');
-                console.log(ele);
-                ele.addEventListener("change", function () {
-                    radio_changed(input);
-                })
+                if (ele) {
+                    ele.addEventListener("change", function () {
+                        radio_changed(this);
+                    })
+                }
             }
 
             // label要素を作成
             var label = document.createElement("label");
             label.setAttribute("for", "mytimetable");
+            label.setAttribute("id", "label-mytimetable");
             label.textContent = "自分専用";
 
-            //divElementの中にあるbrを削除
-            var divElementElement = divElement.querySelector("br");
-            if (divElementElement !== null) {
-                divElementElement.remove();
+            // controlsHostの中にあるbrを削除
+            if (controlsHost) {
+                var divElementElement = controlsHost.querySelector("br");
+                if (divElementElement !== null) {
+                    divElementElement.remove();
+                }
+
+                controlsHost.appendChild(input);
+                controlsHost.appendChild(label);
+                if (enableEditorButton) {
+                    controlsHost.appendChild(button);
+                }
             }
 
-            divElement.appendChild(input);
-            divElement.appendChild(label);
-            divElement.appendChild(button);
-
-
-
-
-        }
+            syncTabActiveState();
     } catch (error) {
-        console.error('Error reading setting2:', error);
+        console.error('Error building timetable controls:', error);
     }
 
-    myTimeTable_create(divElement);
+    if (tableHost) {
+        myTimeTable_create(tableHost);
+    }
     BeginSetID();
-    storage_timetable_background();
     addCoordinatesToTable();
+    storage_timetable_background();
 
     try {
         const setting3Value = await read_data("setting3");
-        console.log(JSON.parse(setting3Value))
-        if (JSON.parse(setting3Value)) {//時間割ボタンの追加
+        if (parseBooleanSetting(setting3Value, true)) {
             var input = document.getElementById("mytimetable")
-            input.checked = true;
-            radio_changed(input);
+            if (input) {
+                input.checked = true;
+                radio_changed(input);
+            }
         }
 
     } catch (error) {
