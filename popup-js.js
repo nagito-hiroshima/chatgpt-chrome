@@ -281,6 +281,17 @@ function storage_set(key, value) {
   });
 }
 
+function normalizeMoodleUrl(url) {
+  if (typeof url !== "string") {
+    return "https://moodle2026.mc2.osakac.ac.jp/2026/";
+  }
+
+  // 過去年度の保存URLでも、現行年度(2026)のMoodleに寄せて開く
+  return url
+    .replace(/moodle\d+\.mc2\.osakac\.ac\.jp/, "moodle2026.mc2.osakac.ac.jp")
+    .replace(/\/20\d{2}(?=\/|$)/, "/2026");
+}
+
 
 document.getElementById("curriculum").addEventListener("click", function () {
   //現在の時刻を取得
@@ -315,7 +326,7 @@ document.getElementById("curriculum").addEventListener("click", function () {
       console.log(value + ":" + data[value]);
       if (data[value] == code) {
         console.log("該当あり")
-        window.open(value, '_blank');
+        window.open(normalizeMoodleUrl(value), '_blank');
         return;
       }
     }
