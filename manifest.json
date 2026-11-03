@@ -15,6 +15,8 @@
         "https://*.mc2.osakac.ac.jp/*"
       ],
       "js": [
+        "etc-images.js",
+        "etc-answer.js",
         "content-script.js"
       ],
       "css": [
@@ -30,7 +32,8 @@
     },
     {
       "matches": [
-        "https://*.mc2.osakac.ac.jp/*/login/index.php"
+        "https://*.mc2.osakac.ac.jp/*/login/index.php*",
+        "https://*.mc2.osakac.ac.jp/login/index.php*"
       ],
       "js": [
         "login.js"
@@ -63,9 +66,15 @@
   },
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "sidePanel",
+    "webRequest"
   ],
+  "minimum_chrome_version": "116",
+  "host_permissions": ["https://auth.openai.com/*", "https://api.openai.com/*", "http://127.0.0.1/*"],
+  "side_panel": { "default_path": "chat-panel.html" },
   "background": {
-    "service_worker": "main.js"
+    "service_worker": "chat-worker.mjs",
+    "type": "module"
   }
 }

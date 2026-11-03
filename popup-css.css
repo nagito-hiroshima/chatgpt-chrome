@@ -1,274 +1,118 @@
-* {
-    margin: 20;
-    padding: 0;
-    /*中央*/
-    text-align: center;
-  }
-
-  input #nkey-input {
-    width: 100px;
-    height: 100px;
-    color: #000000;
-    background-color: #ffffff;
-  }
-
-  h2 {
-    color: white;
-    background-color: #999999;
-    margin-top: 0;
-  }
-
-  h3 {
-    /*上下中央*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-  }
-
-  /* === ボタンを表示するエリア ============================== */
-  .switchArea {
-    line-height: 28px;
-    /* 1行の高さ          */
-    letter-spacing: 0;
-    /* 文字間             */
-    text-align: center;
-    /* 文字位置は中央     */
-    font-size: 20px;
-    /* 文字サイズ         */
-
-    position: relative;
-    /* 親要素が基点       */
-    margin: auto;
-    /* 中央寄せ           */
-    width: 80px;
-    /* ボタンの横幅       */
-    background: #eee;
-    /* デフォルト背景色   */
-  }
-
-  /* === チェックボックス ==================================== */
-  .switchArea input[type="checkbox"] {
-    display: none;
-    /* チェックボックス非表示 */
-  }
-
-  /* === チェックボックスのラベル（標準） ==================== */
-  .switchArea label {
-    display: block;
-    /* ボックス要素に変更 */
-    box-sizing: border-box;
-    /* 枠線を含んだサイズ */
-    height: 33px;
-    /* ボタンの高さ       */
-    border: 2px solid #999999;
-    /* 未選択タブのの枠線 */
-    border-radius: 30px;
-    /* 角丸               */
-  }
-
-  /* === チェックボックスのラベル（ONのとき） ================ */
-  .switchArea input[type="checkbox"]:checked+label {
-    border-color: #78bd78;
-    /* 選択タブの枠線     */
-  }
-
-  /* === 表示する文字（標準） ================================ */
-  .switchArea label span:after {
-    content: "OFF";
-    /* 表示する文字       */
-    padding: 0 0 0 29px;
-    /* 表示する位置       */
-    color: #999999;
-    /* 文字色             */
-  }
-
-  /* === 表示する文字（ONのとき） ============================ */
-  .switchArea input[type="checkbox"]:checked+label span:after {
-    content: "ON";
-    /* 表示する文字       */
-    padding: 0 36px 0 0;
-    /* 表示する位置       */
-    color: #78bd78;
-    /* 文字色             */
-  }
-
-  /* === 丸部分のSTYLE（標準） =============================== */
-  .switchArea #swImg {
-    position: absolute;
-    /* 親要素からの相対位置*/
-    width: 25px;
-    /* 丸の横幅           */
-    height: 25px;
-    /* 丸の高さ           */
-    background: #999999;
-    /* カーソルタブの背景 */
-    top: 4px;
-    /* 親要素からの位置   */
-    left: 4px;
-    /* 親要素からの位置   */
-    border-radius: 26px;
-    /* 角丸               */
-    transition: .2s;
-    /* 滑らか変化         */
-  }
-
-  /* === 丸部分のSTYLE（ONのとき） =========================== */
-  .switchArea input[type="checkbox"]:checked~#swImg {
-    transform: translateX(46px);
-    /* 丸も右へ移動       */
-    background: #78bd78;
-    /* カーソルタブの背景 */
-  }
-
-  #status {
-    margin-top: 10px;
-    height: 20px;
-  }
-
-  #save {
-    /*緑のボタン 下*/
-    margin-top: 0px;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 5px 30px;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    height: 22px;
-    width: 40px;
-  }
-
-  #header-car {
-    /*横並び*/
-    display: flex;
-    flex-direction: row;
-    /*中央寄せ*/
-    justify-content: center;
-    align-items: center;
-
-  }
-
-
-  .tab-group {
-    display: flex;
-    justify-content: center;
-  }
-
-  .tab {
-    flex-grow: 1;
-    padding: 5px;
-    list-style: none;
-    border: solid 1px #CCC;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .panel-group {
-    height: 320px;
-    max-width: 186px;
-    min-width: 186px;
-    border: solid 1px #CCC;
-    border-top: none;
-    background: #eee;
-  }
-
-  .panel {
-    display: none;
-  }
-
-  .tab.is-active {
-    background: #0062ff;
-    color: #FFF;
-    transition: all 0.2s ease-out;
-  }
-
-  .panel.is-show {
-    display: block;
-  }
-
-
-
-  @import "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
-
-
-.btn,
-a.btn,
-button.btn {
-  margin-top: 10px;
+:root {
+  color-scheme: light;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif;
   font-size: 14px;
-  font-weight: 700;
-  line-height: 1.5;
-  position: relative;
-  display: inline-block;
-  padding: 0.75rem 1.0rem;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  text-align: center;
-  vertical-align: middle;
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  color: #212529;
-  border-radius: 0.5rem;
+  line-height: 1.6;
+  color: #243246;
+  background: #f3f5f8;
 }
 
-a.btn-tag {
-  padding: 1.0rem 1.0rem 1.0rem 3.5rem;
-  color: #fff;
-  background: #f39800;
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow: hidden; }
+body { width: 360px; max-height: 600px; margin: 0; padding: 14px; overflow-y: auto; overflow-wrap: anywhere; }
+h1, h2, h3, p { margin: 0; }
+button, input, select { font: inherit; letter-spacing: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+
+#header-car { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+#header-car img { flex: 0 0 40px; }
+h1 { font-size: 21px; line-height: 1.4; font-weight: 700; }
+h2 { font-size: 15px; margin-bottom: 10px; }
+h3 { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 6px; }
+.tab-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; margin-bottom: 10px; background: #e4e9f0; border-radius: 10px; }
+.tab { min-width: 0; min-height: 38px; padding: 8px 4px; border: 0; border-radius: 7px; background: transparent; color: #4b586a; font-size: 13px; line-height: 1.5; font-weight: 600; }
+.tab.is-active { color: #184da5; background: white; box-shadow: 0 1px 4px #24324618; }
+.tab:hover { color: #184da5; }
+.panel-group { border: 1px solid #dce2ea; border-radius: 12px; background: white; }
+.panel { display: none; padding: 14px; }
+.panel.is-show { display: block; }
+.help-text { margin: 6px 0 10px; color: #596579; font-size: 12px; line-height: 1.7; }
+
+.myportal, .moodle, .ai, .btn, #save {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-width: 0; min-height: 44px; padding: 10px 12px;
+  border: 1px solid transparent; border-radius: 8px;
+  font-weight: 600; line-height: 1.5; text-align: center;
 }
+.myportal, .moodle { margin-bottom: 10px; font-size: 14px; }
+.myportal::before, .moodle::before, .ai::before { content: ""; width: 20px; height: 20px; flex: 0 0 20px; background: center / contain no-repeat; }
+.myportal::before { background-image: url("img/symbol.png"); }
+.moodle::before { background-image: url("img/moodle.png"); }
+.ai1::before { background-image: url("img/chatgpt.png"); }
+.ai2::before { background-image: url("img/genemi.png"); }
+.btn-yellow { background: #e9f4d9; color: #365615; border-color: #d1e6b2; }
+.btn-yellow:hover { background: #deedc6; }
+.btn-orange { background: #fff0d9; color: #824a08; border-color: #f5d6a6; }
+.btn-orange:hover { background: #ffe5bc; }
+.shortcut-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ai { font-size: 12px; padding-inline: 6px; background: #f3f5f8; border-color: #e0e5ec; }
+.ai:hover { background: #e8edf4; }
+.timestamp { margin-top: 16px; padding-top: 14px; border-top: 1px solid #e4e9f0; text-align: center; }
+.timestamp h2 { margin-bottom: 4px; color: #596579; font-size: 12px; }
+#timestamp { font-size: 32px; font-weight: 600; line-height: 1.5; font-variant-numeric: tabular-nums; }
+#timestamp2, #timestamp3 { font-size: 12px; min-height: 1.6em; }
+#timestamp3 { color: #184da5; }
 
-a.btn-tag:before {
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 40px;
-  height: 100%;
-
-  content: "";
-
-  border-radius: 0.5rem 0 0 0.5rem;
-  background: rgba(0, 0, 0, 0.07);
-}
-
-a.btn-tag:hover {
-  color: #fff;
-  background: #ffa50e;
-}
-
-a.btn-tag i {
-  font-size: 120%;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 40px;
-  padding: 1.1rem 0;
-
-  text-align: center;
-  letter-spacing: 0;
-}
-
-/*横並び*/
-.flex {
-  display: flex;
-  flex-direction: row;
-  /*中央寄せ*/
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-}
-.syousai_settei{
-  font-size: 10px;
-  width: 100px;
-}
+input:not([type="checkbox"]), select { display: block; width: 100%; min-width: 0; min-height: 40px; padding: 9px 10px; border: 1px solid #b8c2d0; border-radius: 7px; background: white; color: #243246; font-size: 14px; line-height: 1.5; }
+input:not([type="checkbox"]) + input { margin-top: 8px; }
+input::placeholder { color: #687487; opacity: 1; }
+select { padding-right: 28px; }
+hr { border: 0; border-top: 1px solid #e4e9f0; margin: 12px 0; }
+.flex { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.syousai_settei { flex: 1 1 0; min-width: 0; font-size: 13px; line-height: 1.6; }
+.switchArea { position: relative; flex: 0 0 76px; width: 76px; height: 34px; }
+.switchArea input[type="checkbox"] { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; z-index: 2; cursor: pointer; }
+.switchArea label { display: block; height: 100%; border: 1px solid #b8c2d0; border-radius: 20px; background: #edf0f4; }
+.switchArea label span::after { content: "OFF"; position: absolute; inset: 0 7px 0 32px; display: flex; align-items: center; justify-content: center; color: #596579; font-size: 11px; line-height: 1; font-weight: 700; }
+.switch-thumb { position: absolute; top: 5px; left: 5px; width: 24px; height: 24px; border-radius: 50%; background: #687487; pointer-events: none; transition: transform .15s; }
+.switchArea input:checked + label { background: #e0efdf; border-color: #589755; }
+.switchArea input:checked + label span::after { content: "ON"; inset: 0 32px 0 7px; color: #31632e; }
+.switchArea input:checked ~ .switch-thumb { transform: translateX(42px); background: #407b3c; }
+.switchArea input:focus-visible + label { outline: 3px solid #2563eb; outline-offset: 3px; }
+#setting h3 { margin-top: 12px; }
+#setting > br { display: none; }
+.btn-tag { margin-top: 16px; background: #fff0d9; color: #824a08; }
+.btn-tag:hover { background: #ffe5bc; }
+#status { min-height: 1.6em; margin: 10px 0; font-size: 12px; color: #596579; text-align: center; }
+#save { width: 100%; background: #276b43; color: white; }
+#save:hover { background: #205936; }
+#save:disabled { opacity: .6; cursor: wait; }
+#etc-chatgpt { width: 100%; margin-bottom: 6px; }
+#etc-refresh { padding: 4px 0; border: 0; background: transparent; color: #276b43; font-size: 12px; }
+.etc-overwrite-label { display: flex; align-items: center; gap: 5px; font-size: 12px; margin: 8px 0; }
+#save-login { width: 100%; min-height: 40px; margin-top: 10px; padding: 8px 10px; border: 1px solid #c5d5ed; border-radius: 7px; background: #edf3fc; color: #184da5; font-weight: 600; }
+#save-login:hover { background: #dfeafb; }
+#login-status:empty { display: none; }
+#loader svg { display: block; }
+#loader path { fill: currentColor; }
+.personal-section { padding: 12px; border: 1px solid #e1e7e0; border-radius: 10px; background: #fafcf9; }
+.personal-section + .personal-section { margin-top: 12px; }
+.personal-section .help-text { font-size: 11px; }
+#panel-C.is-show { display: flex; flex-direction: column; max-height: 450px; padding: 0; overflow: hidden; }
+.ai-master { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; padding: 14px; background: #f3f6f0; border-bottom: 1px solid #e0e8dc; }
+.ai-master[data-enabled="true"] { background: #eaf3e5; }
+.settings-eyebrow { color: #6d8568; font-size: 9px; letter-spacing: .1em; font-weight: 600; margin-bottom: 3px; }
+.ai-master h2 { margin: 0 0 3px; font-size: 14px; }
+.settings-description { margin: 5px 0 0; color: #71806d; font-size: 10px; line-height: 1.8; }
+.ai-settings-scroll { min-height: 0; overflow-y: auto; padding: 0 14px; scrollbar-width: thin; scrollbar-color: #c9d5c5 transparent; }
+.ai-section { padding: 13px 0; border-bottom: 1px solid #e7ece3; }
+#panel-C #setting h3 { margin: 0; font-size: 12px; font-weight: 650; }
+.settings-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+#panel-C .connection-status { margin: 6px 0 9px; font-size: 11px; color: #687965; line-height: 1.7; }
+#panel-C .connection-status[data-connected="true"] { color: #39734a; }
+#panel-C #etc-refresh { padding: 3px 0 3px 5px; border: 0; border-radius: 4px; background: transparent; color: #64815c; font-size: 10px; }
+#panel-C #etc-refresh:hover { color: #276b43; }
+#panel-C #etc-chatgpt { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 35px; margin: 0; padding: 7px 10px; background: #f6f9f3; border: 1px solid #dae5d5; border-radius: 8px; color: #386048; font-size: 11px; font-weight: 600; }
+#panel-C #etc-chatgpt:hover { background: #eaf2e5; }
+#panel-C #etc-model { min-height: 35px; margin-top: 8px; padding: 6px 9px; border-color: #d4dfce; font-size: 12px; }
+#panel-C .etc-overwrite-label { padding: 9px; margin: 9px 0 0; border-radius: 7px; background: #f5f7f2; font-size: 10px; line-height: 1.7; }
+#panel-C .etc-overwrite-label:has(input:disabled) { color: #95a08e; }
+#panel-C .etc-overwrite-label input { accent-color: #407b3c; }
+.ai-privacy-note { padding: 10px 0 13px; color: #89937f; font-size: 9px; line-height: 1.8; }
+.ai-savebar { flex-shrink: 0; padding: 10px 14px 12px; border-top: 1px solid #e3e9df; background: #fff; box-shadow: 0 -4px 12px #28482c05; }
+#panel-C #status { min-height: 16px; margin: 0 0 5px; font-size: 10px; text-align: left; }
+#panel-C #save { min-height: 37px; padding: 7px 12px; font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { .switch-thumb { transition: none; } }

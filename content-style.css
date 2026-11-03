@@ -10,6 +10,14 @@
     /*カーソルを指に*/
     cursor: pointer;
 }
+.oecu-etc-error { margin-top: 12px; padding: 10px 12px; border: 1px solid #e4d8c8; border-radius: 8px; background: #fff8ee; color: #78532c; font-size: 12px; line-height: 1.7; }
+.oecu-etc-error button { margin-left: 10px; padding: 3px 8px; border: 1px solid #c7d7c9; border-radius: 6px; background: #f3f7f0; color: #27634a; font: inherit; cursor: pointer; }
+.oecu-etc-tooltip { all: initial; position: fixed; display: block; z-index: 2147483647; box-sizing: border-box; width: max-content; max-width: min(440px, calc(100vw - 24px)); max-height: min(440px, 55vh); overflow: auto; padding: 14px 16px; border: 1px solid #d6e1d1; border-radius: 12px; background: #fff; color: #263c31; box-shadow: 0 8px 30px #1833212b; font-family: system-ui, "Yu Gothic UI", Meiryo, sans-serif; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.oecu-etc-tooltip[hidden] { display: none !important; }
+.oecu-etc-tooltip-heading { font-size: 11px; font-weight: 600; color: #42704d; border-bottom: 1px solid #e6ece1; padding-bottom: 7px; margin-bottom: 8px; }
+.oecu-etc-tooltip-body { white-space: pre-wrap; }
+.oecu-etc-fill-status { margin: 10px 0 0; font-size: 12px; color: #7c5d32; }
+.oecu-etc-fill-status[data-applied="true"] { color: #27634a; }
 
 #mytimeTable_table .intensive-grid {
     display: grid;
@@ -36,4 +44,16 @@
 
 #mytimeTable_table td.course-cell {
     padding: 14px;
+}
+
+#oecu-login-status {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border: 1px solid #c5d5ed;
+    border-radius: 6px;
+    background: #edf3fc;
+    color: #243246;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
