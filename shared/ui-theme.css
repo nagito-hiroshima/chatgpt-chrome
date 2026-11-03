@@ -1,0 +1,169 @@
+/* デジタル庁デザインシステムの配色・階層・フォーカス表現を参考にした共通UI。 */
+:root {
+  --ui-blue: #0017c1;
+  --ui-blue-hover: #000082;
+  --ui-blue-light: #e8f1fe;
+  --ui-text: #1a1a1c;
+  --ui-muted: #595959;
+  --ui-border: #b3b3b3;
+  --ui-divider: #d9d9d9;
+  --ui-surface: #f5f5f5;
+  --accent: var(--ui-blue);
+  --muted: var(--ui-muted);
+  --line: var(--ui-divider);
+  color: var(--ui-text);
+  background: #fff;
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.75;
+}
+:focus-visible { outline: 3px solid #1a1a1c; outline-offset: 3px; box-shadow: 0 0 0 3px #ffd43d; }
+a { text-underline-offset: .2em; }
+button { font-weight: 700; }
+input[type="checkbox"] { accent-color: var(--ui-blue); }
+
+/* ポップアップ */
+.popup-ui { padding: 16px; }
+.popup-ui #header-car { gap: 8px; margin-bottom: 20px; }
+.popup-ui #header-car h1 { font-size: 20px; letter-spacing: 0; }
+.popup-ui .usage-guide-link { color: var(--ui-blue); max-width: 88px; font-size: 12px; }
+.popup-ui .tab-group { gap: 0; padding: 0; border-radius: 0; border-bottom: 1px solid var(--ui-border); background: #fff; margin-bottom: 20px; }
+.popup-ui .tab { position: relative; min-height: 48px; border-radius: 0; color: var(--ui-muted); background: #fff; font-size: 14px; }
+.popup-ui .tab:hover { background: var(--ui-blue-light); color: var(--ui-blue); }
+.popup-ui .tab.is-active { color: var(--ui-blue); box-shadow: none; }
+.popup-ui .tab.is-active::after { content: ''; position: absolute; bottom: -1px; left: 8px; right: 8px; height: 4px; background: var(--ui-blue); }
+.popup-ui .panel-group { border: 0; border-radius: 0; }
+.popup-ui .panel { padding: 0; }
+.popup-ui h2 { font-size: 18px; margin-bottom: 16px; }
+.popup-ui h3 { font-size: 15px; }
+.popup-ui .myportal, .popup-ui .moodle, .popup-ui .ai, .popup-ui #save-login, .popup-ui #save { min-height: 48px; border-radius: 8px; font-size: 14px; }
+.popup-ui .moodle, .popup-ui #save, .popup-ui #save-login { background: var(--ui-blue); color: #fff; border: 1px solid var(--ui-blue); }
+.popup-ui .moodle:hover, .popup-ui #save:hover, .popup-ui #save-login:hover { background: var(--ui-blue-hover); border-color: var(--ui-blue-hover); text-decoration: underline; }
+.popup-ui .myportal, .popup-ui .ai { background: #fff; color: var(--ui-blue); border: 1px solid var(--ui-blue); }
+.popup-ui .myportal:hover, .popup-ui .ai:hover { background: var(--ui-blue-light); text-decoration: underline; }
+.popup-ui .help-text, .popup-ui .personal-section .help-text { color: var(--ui-muted); font-size: 12px; line-height: 1.8; }
+.popup-ui .personal-section { background: #fff; border: 1px solid var(--ui-divider); border-radius: 8px; padding: 16px; }
+.popup-ui .personal-section + .personal-section { margin-top: 16px; }
+.popup-ui .syousai_settei { font-size: 14px; }
+.popup-ui .flex { gap: 12px; margin-top: 12px; }
+.popup-ui .switchArea { height: 40px; }
+.popup-ui .switchArea label { background: #fff; border: 2px solid #757575; }
+.popup-ui .switch-thumb { top: 8px; background: #757575; }
+.popup-ui .switchArea label span::after { color: var(--ui-muted); }
+.popup-ui .switchArea input:checked + label { background: var(--ui-blue); border-color: var(--ui-blue); }
+.popup-ui .switchArea input:checked + label span::after { color: #fff; }
+.popup-ui .switchArea input:checked ~ .switch-thumb { background: #fff; }
+.popup-ui .switchArea input:focus-visible + label { outline: 3px solid #1a1a1c; outline-offset: 3px; box-shadow: 0 0 0 3px #ffd43d; }
+.popup-ui input:not([type="checkbox"]), .popup-ui select { border-color: #757575; border-radius: 4px; color: var(--ui-text); min-height: 48px; }
+.popup-ui .storage-scope-tag { background: var(--ui-surface); color: var(--ui-muted); border-color: var(--ui-border); border-radius: 4px; font-size: 11px; }
+.popup-ui .timestamp { border-color: var(--ui-divider); margin-top: 24px; }
+.popup-ui #timestamp3 { color: var(--ui-blue); }
+.popup-ui .ai-master, .popup-ui .ai-master[data-enabled="true"] { background: var(--ui-surface); padding: 16px; border-color: var(--ui-divider); border-radius: 8px 8px 0 0; }
+.popup-ui .ai-master[data-enabled="false"] { border-radius: 8px; }
+.popup-ui .ai-master h2 { font-size: 16px; }
+.popup-ui .settings-eyebrow { font-size: 11px; color: var(--ui-muted); }
+.popup-ui .settings-description, .popup-ui #panel-C .connection-status { color: var(--ui-muted); font-size: 12px; }
+.popup-ui #panel-C #setting h3 { font-size: 14px; }
+.popup-ui #panel-C #etc-refresh { color: var(--ui-blue); font-size: 12px; text-decoration: underline; }
+.popup-ui #panel-C #etc-chatgpt { background: #fff; border-color: var(--ui-blue); color: var(--ui-blue); min-height: 44px; font-size: 13px; }
+.popup-ui #panel-C #etc-chatgpt:hover { background: var(--ui-blue-light); }
+.popup-ui #panel-C #etc-model { border-color: #757575; min-height: 44px; }
+.popup-ui .ai-section, .popup-ui .ai-savebar { border-color: var(--ui-divider); }
+.popup-ui .ai-savebar { box-shadow: none; padding-inline: 0; }
+.popup-ui #panel-C .etc-overwrite-label { background: var(--ui-surface); font-size: 12px; }
+.popup-ui .ai-privacy-note, .popup-ui #panel-C #status { color: var(--ui-muted); font-size: 11px; }
+
+/* 学習チャット */
+.chat-ui header { border-bottom: 3px solid var(--ui-blue); }
+.chat-ui .brand strong { font-size: 16px; }
+.chat-ui .brand small, .chat-ui .session-state, .chat-ui #status { font-size: 12px; color: var(--ui-muted); }
+.chat-ui .icon-button { min-height: 40px; color: var(--ui-blue); }
+.chat-ui .web-link:hover, .chat-ui summary:hover { background: var(--ui-blue-light); }
+.chat-ui summary { background: #fff; border-color: var(--ui-border); color: var(--ui-blue); }
+.chat-ui .settings { border-color: var(--ui-border); border-radius: 8px; box-shadow: 0 8px 24px #00000020; }
+.chat-ui .settings select, .chat-ui .history-row select { border-color: #757575; border-radius: 4px; background: #fff; min-height: 40px; font-size: 13px; }
+.chat-ui #login, .chat-ui #send { background: var(--ui-blue); border-color: var(--ui-blue); border-radius: 8px; }
+.chat-ui #login:hover:enabled, .chat-ui #send:hover:enabled { background: var(--ui-blue-hover); }
+.chat-ui #send { width: 40px; height: 40px; }
+.chat-ui #send:disabled { background: #e6e6e6; color: #757575; }
+.chat-ui .history-row { border-bottom: 1px solid var(--ui-divider); }
+.chat-ui #model, .chat-ui .text-button { font-size: 12px; }
+.chat-ui .text-button, .chat-ui .copy-reply { color: var(--ui-blue); text-decoration: underline; }
+.chat-ui .welcome-icon { background: var(--ui-blue-light); border-color: var(--ui-divider); border-radius: 8px; transform: none; box-shadow: none; }
+.chat-ui .welcome-icon svg { transform: none; }
+.chat-ui .eyebrow { color: var(--ui-blue); }
+.chat-ui .welcome-description { font-size: 14px; }
+.chat-ui .suggestions button { background: #fff; border-color: var(--ui-border); border-radius: 8px; }
+.chat-ui .suggestions button:hover { background: var(--ui-blue-light); }
+.chat-ui .suggestions strong { font-size: 14px; }
+.chat-ui .suggestions small { color: var(--ui-muted); font-size: 12px; }
+.chat-ui .suggestion-symbol { background: var(--ui-blue-light); color: var(--ui-blue); border-radius: 4px; }
+.chat-ui .message .author { color: var(--ui-muted); font-size: 12px; }
+.chat-ui .message .text { font-size: 14px; }
+.chat-ui .message.user .text { background: var(--ui-blue-light); border-color: #b7cdfa; border-radius: 8px; }
+.chat-ui .message .text pre, .chat-ui .message .text code { background: var(--ui-surface); border-color: var(--ui-divider); }
+.chat-ui footer { background: #fff; }
+.chat-ui #composer { border-color: #757575; border-radius: 8px; box-shadow: none; }
+.chat-ui #composer:focus-within { border-color: var(--ui-blue); box-shadow: 0 0 0 2px #ffd43d; }
+.chat-ui textarea { font-size: 14px; }
+.chat-ui textarea::placeholder, .chat-ui footer > small, .chat-ui .compose-actions > span { color: var(--ui-muted); }
+
+/* 使い方ガイド */
+.help-ui header { border-top: 4px solid var(--ui-blue); }
+.help-ui a { color: var(--ui-blue); }
+.help-ui header a { color: var(--ui-text); }
+.help-ui .eyebrow, .help-ui .routes span, .help-ui dt { color: var(--ui-blue); }
+.help-ui h1 { letter-spacing: 0; font-weight: 700; }
+.help-ui .tip { background: var(--ui-blue-light); border-left: 4px solid var(--ui-blue); border-radius: 0; font-size: 15px; }
+.help-ui .steps li, .help-ui .routes > div, .help-ui details { border-color: var(--ui-divider); border-radius: 8px; }
+.help-ui .steps li::before { background: var(--ui-blue); color: #fff; border-radius: 4px; }
+.help-ui .routes p, .help-ui .steps p { font-size: 16px; }
+.help-ui .note, .help-ui footer, .help-ui .guide-screenshot figcaption { color: var(--ui-muted); font-size: 14px; }
+.help-ui thead { background: var(--ui-surface); }
+.help-ui .guide-screenshot a { border-color: var(--ui-border); border-radius: 8px; box-shadow: none; }
+.help-ui summary { color: var(--ui-blue); padding-block: 4px; }
+.help-ui details p { font-size: 16px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
+/* ポップアップは300px幅に合わせて密度を調整する。 */
+.popup-ui { padding: 12px; }
+.popup-ui #header-car { margin-bottom: 12px; }
+.popup-ui #header-car img { width: 32px; height: 32px; flex-basis: 32px; }
+.popup-ui #header-car h1 { font-size: 18px; }
+.popup-ui .usage-guide-link { font-size: 11px; max-width: 88px; }
+.popup-ui .tab-group { margin-bottom: 12px; }
+.popup-ui .tab { min-height: 38px; padding: 6px 4px; font-size: 13px; }
+.popup-ui h2 { font-size: 16px; margin-bottom: 10px; }
+.popup-ui h3 { font-size: 13px; }
+.popup-ui .myportal, .popup-ui .moodle, .popup-ui .ai, .popup-ui #save-login, .popup-ui #save { min-height: 38px; padding: 7px 10px; font-size: 13px; border-radius: 6px; }
+.popup-ui .myportal, .popup-ui .moodle { margin-bottom: 8px; }
+.popup-ui .myportal::before, .popup-ui .moodle::before, .popup-ui .ai::before { width: 18px; height: 18px; flex-basis: 18px; }
+.popup-ui .personal-section { padding: 12px; }
+.popup-ui .personal-section + .personal-section { margin-top: 10px; }
+.popup-ui .flex { margin-top: 8px; gap: 10px; }
+.popup-ui .syousai_settei { font-size: 12px; }
+.popup-ui .switchArea { width: 64px; height: 30px; flex-basis: 64px; }
+.popup-ui .switch-thumb { width: 20px; height: 20px; top: 5px; left: 5px; }
+.popup-ui .switchArea input:checked ~ .switch-thumb { transform: translateX(34px); }
+.popup-ui .switchArea label span::after { font-size: 10px; inset: 0 5px 0 25px; }
+.popup-ui .switchArea input:checked + label span::after { inset: 0 25px 0 5px; }
+.popup-ui input:not([type="checkbox"]), .popup-ui select { min-height: 38px; padding: 7px 9px; font-size: 13px; }
+.popup-ui .storage-scope-tag { padding: 1px 6px; font-size: 10px; }
+.popup-ui .help-text, .popup-ui .personal-section .help-text { font-size: 11px; line-height: 1.7; margin: 5px 0 8px; }
+.popup-ui .timestamp { margin-top: 16px; padding-top: 10px; }
+.popup-ui .timestamp h2 { font-size: 12px; margin-bottom: 4px; }
+.popup-ui #timestamp { font-size: 28px; }
+.popup-ui .ai-master, .popup-ui .ai-master[data-enabled="true"] { padding: 12px; gap: 6px 10px; }
+.popup-ui .ai-master h2 { font-size: 14px; }
+.popup-ui .settings-eyebrow { font-size: 10px; }
+.popup-ui .settings-description, .popup-ui #panel-C .connection-status { font-size: 11px; }
+.popup-ui #panel-C #setting h3 { font-size: 13px; }
+.popup-ui .ai-section { padding-block: 10px; }
+.popup-ui #panel-C #etc-chatgpt { min-height: 38px; font-size: 12px; }
+.popup-ui #panel-C #etc-model { min-height: 38px; }
+.popup-ui #panel-C .etc-overwrite-label { padding: 7px; font-size: 11px; }
+.popup-ui #panel-C #etc-refresh { font-size: 11px; }
+.popup-ui .ai-savebar { padding-block: 8px; }
+
+.popup-ui #header-car h1 { font-size: 17px; }
+.popup-ui #header-car img { width: 28px; height: 28px; flex-basis: 28px; }
+.popup-ui .usage-guide-link { max-width: 76px; font-size: 10px; }

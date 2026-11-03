@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./popup-css.css">
+  <title>高規格道路</title>
+  <link rel="stylesheet" href="../shared/ui-theme.css">
+</head>
+
+<body class="popup-ui">
+  <!--ヘッダー-->
+  <div id="header-car">
+    <img src="../assets/img/icon128.png" alt="icon" width="40" height="40">
+    <h1>高規格道路</h1>
+    <a class="usage-guide-link" href="../help/help.html" target="_blank" rel="noopener">使い方 ↗</a>
+  </div>
+
+  <script src="../shared/timetable-storage.js"></script>
+  <script src="../moodle/timetable-content.js"></script>
+
+  <div class="tab-panel">
+    <!--タブ-->
+    <div class="tab-group" role="tablist" aria-label="メニュー">
+      <button type="button" class="tab tab-A is-active" id="tab-A" role="tab" aria-controls="panel-A" aria-selected="true" tabindex="0">ツール</button>
+      <button type="button" class="tab tab-B" id="tab-B" role="tab" aria-controls="panel-B" aria-selected="false" tabindex="-1">各種設定</button>
+      <button type="button" class="tab tab-C" id="tab-C" role="tab" aria-controls="panel-C" aria-selected="false" tabindex="-1">AI設定</button>
+    </div>
+
+    <!--タブを切り替えて表示するコンテンツ-->
+    <div class="panel-group">
+      <div class="panel tab-A is-show" id="panel-A" role="tabpanel" aria-labelledby="tab-A">
+        <h2>ショートカット</h2>
+        <a href="#" id="myportal" class="myportal btn-yellow">Myportalを開く</a>
+        <a href="#" id="curriculum" class="moodle btn-orange">Moodleを開く</a>
+        <div class="shortcut-grid">
+          <a href="#" id="chatgpt" class="ai ai1 btn-gray">ChatGPT</a>
+          <a href="#" id="genemi" class="ai ai2 btn-gray">Gemini</a>
+        </div>
+        <div class="timestamp">
+          <h2>時計</h2>
+          <div id="timestamp" ></div>
+          <div id="timestamp2" ></div>
+          <div id="timestamp3" ></div>
+
+        </div>
+
+      </div>
+      <div class="panel tab-B" id="panel-B" role="tabpanel" aria-labelledby="tab-B">
+
+        <h2>個人設定</h2>
+        <div class="personal-section">
+          <div class="flex">
+            <h3>他端末と同期</h3>
+            <div class="switchArea">
+              <input type="checkbox" id="timetable-sync" aria-label="時間割と表示設定を他端末と同期">
+              <label for="timetable-sync"><span></span></label>
+              <div class="switch-thumb" aria-hidden="true"></div>
+            </div>
+          </div>
+          <p id="sync-status" class="help-text" role="status" aria-live="polite"></p>
+        </div>
+        <div class="personal-section">
+          <h3>時間割</h3>
+          <div class="flex">
+            <div class="syousai_settei">Moodleを開いたときに<br>自分の時間割を表示</div>
+            <div class="switchArea">
+              <input type="checkbox" id="switch3" aria-label="Moodle起動時に自分の時間割を表示">
+              <label for="switch3"><span></span></label>
+              <div class="switch-thumb" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="syousai_settei">自分の時間割<br>ボタンを追加</div>
+            <div class="switchArea">
+              <input type="checkbox" id="switch2" aria-label="自分の時間割ボタンを追加">
+              <label for="switch2"><span></span></label>
+              <div class="switch-thumb" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+        <div class="personal-section">
+        <div class="settings-tag-heading"><h3>Moodleの自動ログイン</h3><span class="storage-scope-tag">ローカル</span></div>
+        <p class="help-text">MoodleのMC2アカウントを入力してください。<br>入力内容は自動保存されます。</p>
+        <input type="text" id="user_id" name="user_id" aria-label="ユーザーID" placeholder="ユーザーID" autocomplete="off">
+        <input type="password" id="user_pass" name="user_pass" aria-label="パスワード" placeholder="パスワード">
+        <button type="button" id="save-login">ログイン情報を保存</button>
+        <p id="login-status" class="help-text" role="status" aria-live="polite"></p>
+        </div>
+
+      </div>
+
+
+
+      <div class="panel tab-C" id="panel-C" role="tabpanel" aria-labelledby="tab-C">
+        <div class="ai-master" data-enabled="false">
+          <p class="settings-eyebrow">AIアシスト</p><span class="storage-scope-tag">ローカル</span>
+          <div class="ai-master-content"><h2 id="ai-master-label">MoodleでAIを使う</h2><p class="settings-description">問題文・画像をChatGPTに質問</p></div>
+          <div class="switchArea">
+            <input type="checkbox" id="nkey-checkbox" aria-labelledby="ai-master-label">
+            <label for="nkey-checkbox"><span></span></label>
+            <div class="switch-thumb" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p id="ai-toggle-status" role="status" aria-live="polite" hidden></p>
+        <div id="setting" class="ai-settings-scroll" hidden>
+          <section class="ai-section" aria-labelledby="ai-account-label">
+            <div class="settings-section-heading"><h3 id="ai-account-label">接続アカウント</h3><button type="button" id="etc-refresh" title="ログイン状態を確認">↻ 更新</button></div>
+            <p id="etc-account" class="connection-status" role="status" aria-live="polite">接続を確認中…</p>
+            <button type="button" id="etc-chatgpt" class="ai-connect-button"><span id="etc-connect-label">ChatGPTを開く</span><span aria-hidden="true">↗</span></button>
+          </section>
+          <section class="ai-section" aria-labelledby="ai-model-label">
+            <h3 id="ai-model-label"><label for="etc-model">使用するモデル</label></h3>
+            <select id="etc-model" aria-label="MoodleのAIで使用するモデル" disabled><option value="">ログイン後に選択できます</option></select>
+            <p class="settings-description">画像付きの問題には、画像対応モデルを選択。</p>
+          </section>
+          <section class="ai-section" aria-labelledby="ai-autofill-label">
+            <div class="settings-section-heading"><h3 id="ai-autofill-label">回答を自動入力</h3><div class="switchArea">
+              <input type="checkbox" id="etc-autofill" aria-label="回答を自動で選択・入力">
+              <label for="etc-autofill"><span></span></label>
+              <div class="switch-thumb" aria-hidden="true"></div>
+            </div></div>
+            <label class="etc-overwrite-label"><input type="checkbox" id="etc-overwrite"> 入力済みの回答も置き換える</label>
+          </section>
+        </div>
+        <div class="ai-savebar" hidden>
+          <div id="status" role="status" aria-live="polite">変更した設定は、保存すると反映されます。</div>
+          <button type="button" id="save"><span id="saves">設定を保存</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="./onboarding.js"></script>
+  <script src="./etc-popup.js"></script>
+  <script src="../shared/moodle-departments.js"></script>
+  <script src="./popup-js.js">
+  </script>
+</body>
+
+</html>

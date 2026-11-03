@@ -45,7 +45,10 @@ test('chat panel login, model choice, safe streaming, failure, and new chat in C
   await command('Emulation.setDeviceMetricsOverride', { width: 390, height: 850, deviceScaleFactor: 1, mobile: false });
   await command('Page.addScriptToEvaluateOnNewDocument', { source: `
     window.mockConnected = false; window.mockMode = 'complete'; window.openedURL = '';
-    Object.assign(window.chrome, { runtime: {
+    Object.assign(window.chrome, { storage: {local: {
+      async get(key) { return {[key]: JSON.parse(localStorage.getItem(key) || 'null')}; },
+      async set(data) { for (const [key, value] of Object.entries(data)) localStorage.setItem(key, JSON.stringify(value)); }
+    }}, runtime: {
       async sendMessage(message) {
         const json = data => ({data});
         if (message.action === 'status') return json({ connected: window.mockConnected, accounts: [{ clientId: 'older-client', email: 'older@example.test' }, { clientId: 'test-client', email: 'demo@example.test' }], account: window.mockConnected ? { clientId: 'test-client', email: 'demo@example.test' } : null });
@@ -75,7 +78,7 @@ test('chat panel login, model choice, safe streaming, failure, and new chat in C
     const result = await command('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
     assert.ok(!result.exceptionDetails, JSON.stringify(result.exceptionDetails)); return result.result.value;
   }
-  await command('Page.navigate', { url: pathToFileURL(fileURLToPath(new URL('../chat-panel.html', import.meta.url))).href });
+  await command('Page.navigate', { url: pathToFileURL(fileURLToPath(new URL('../chat/chat-panel.html', import.meta.url))).href });
   async function until(expression) {
     for (let i = 0; i < 50; i++) { if (await evaluate(expression)) return; await new Promise(resolve => setTimeout(resolve, 50)); }
     assert.fail(`Not reached: ${expression}`);
@@ -99,6 +102,10 @@ test('chat panel login, model choice, safe streaming, failure, and new chat in C
   await until("document.getElementById('status').textContent.includes('返信が完了')");
   assert.equal(await evaluate("document.querySelectorAll('.message .text img').length"), 0);
   assert.equal(await evaluate('window.lastSent.messages.length'), 1);
+  assert.equal(await evaluate("document.getElementById('chat-history').options.length"), 2);
+  await evaluate("(async () => { clearChat(); savedChats = await historyStore.load(activeAccount); restoreChat(); })()");
+  assert.equal(await evaluate("document.querySelectorAll('.message').length"), 2, 'saved messages restore from local storage');
+
   assert.equal(await evaluate("document.documentElement.scrollWidth <= window.innerWidth"), true);
   await evaluate("renderAnswer(document.querySelector('.message.assistant .text'), '# 見出し\\n\\n- **要点**を確認\\n- `code`\\n\\n```js\\nconst value = \"<script>alert(1)</script>\";\\n```')");
   assert.equal(await evaluate("document.querySelector('.message.assistant h2').textContent"), '見出し');

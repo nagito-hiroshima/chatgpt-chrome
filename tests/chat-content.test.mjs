@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validMessages, validImages, IMAGE_LIMITS } from '../chat-content.mjs';
+import { validMessages, validImages, IMAGE_LIMITS } from '../chat/chat-content.mjs';
 
 const png = 'data:image/png;base64,iVBORw0KGgo=';
 test('image input accepts bounded data URLs and rejects external/private URLs or files', () => {

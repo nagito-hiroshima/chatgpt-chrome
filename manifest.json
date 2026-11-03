@@ -4,9 +4,9 @@
   "version": "2.6.9",
   "description": "世界最高レベルの道路を誇る高規格道路で、速度を守りながら、楽しく走行できます。",
   "icons": {
-    "16": "img/icon16.png",
-    "48": "img/icon48.png",
-    "128": "img/icon128.png"
+    "16": "assets/img/icon16.png",
+    "48": "assets/img/icon48.png",
+    "128": "assets/img/icon128.png"
   },
   "offline_enabled": false,
   "content_scripts": [
@@ -15,19 +15,21 @@
         "https://*.mc2.osakac.ac.jp/*"
       ],
       "js": [
-        "etc-images.js",
-        "etc-answer.js",
-        "content-script.js"
+        "moodle/etc-images.js",
+        "moodle/etc-answer.js",
+        "moodle/moodle-ai-content.js"
       ],
       "css": [
-        "content-style.css"
+        "moodle/content-style.css"
       ]
-    },{
+    },
+    {
       "matches": [
         "https://*.mc2.osakac.ac.jp/*"
       ],
       "js": [
-        "button.js"
+        "shared/moodle-departments.js",
+        "moodle/button.js"
       ]
     },
     {
@@ -36,7 +38,7 @@
         "https://*.mc2.osakac.ac.jp/login/index.php*"
       ],
       "js": [
-        "login.js"
+        "moodle/login.js"
       ]
     },
     {
@@ -46,23 +48,21 @@
         "https://*.mc2.osakac.ac.jp/*/mod/feedback/view.php?id=*"
       ],
       "js": [
-        "assign.js"
+        "moodle/assign.js"
       ]
     },
     {
       "matches": [
         "https://*.mc2.osakac.ac.jp/*/*"
       ],
-      "html": [
-        "timeTable.html"
-      ],
       "js": [
-        "content_script.js"
+        "shared/timetable-storage.js",
+        "moodle/timetable-content.js"
       ]
     }
   ],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup/popup.html"
   },
   "permissions": [
     "storage",
@@ -71,10 +71,16 @@
     "webRequest"
   ],
   "minimum_chrome_version": "116",
-  "host_permissions": ["https://auth.openai.com/*", "https://api.openai.com/*", "http://127.0.0.1/*"],
-  "side_panel": { "default_path": "chat-panel.html" },
+  "host_permissions": [
+    "https://auth.openai.com/*",
+    "https://api.openai.com/*",
+    "http://127.0.0.1/*"
+  ],
+  "side_panel": {
+    "default_path": "chat/chat-panel.html"
+  },
   "background": {
-    "service_worker": "chat-worker.mjs",
+    "service_worker": "background/chat-worker.mjs",
     "type": "module"
   }
 }

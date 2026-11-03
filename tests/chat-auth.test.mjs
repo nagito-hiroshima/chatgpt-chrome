@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generateKeyPairSync, sign } from 'node:crypto';
-import { createChatClient, validateIdentity, CALLBACK } from '../chat-auth.mjs';
+import { createChatClient, validateIdentity, CALLBACK } from '../chat/chat-auth.mjs';
 
 const { privateKey, publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const jwk = { ...publicKey.export({ format: 'jwk' }), kid: 'serverless-key', alg: 'RS256' };

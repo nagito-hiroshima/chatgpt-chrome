@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createMoodleAI, isMoodleSender, decodeAnswer, usableQuestion } from '../moodle-ai.mjs';
+import { createMoodleAI, isMoodleSender, decodeAnswer, usableQuestion } from '../moodle/moodle-ai.mjs';
 
 test('Moodle bridge accepts only our extension on the intended HTTPS top frame', () => {
   const valid = { id: 'extension-id', frameId: 0, tab: { id: 1 }, url: 'https://moodle2026.mc2.osakac.ac.jp/2026/mod/quiz/attempt.php?id=1' };

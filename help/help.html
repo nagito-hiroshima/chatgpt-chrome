@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>使い方 | 高規格道路</title>
+  <link rel="stylesheet" href="./help.css">
+  <link rel="stylesheet" href="../shared/ui-theme.css">
+</head>
+
+<body class="help-ui">
+  <header><a href="#" aria-label="使い方の先頭へ"><img src="../assets/img/icon48.png" width="36" height="36"
+        alt="">高規格道路<span>使い方ガイド</span></a></header>
+  <main>
+    <section class="intro" aria-labelledby="welcome">
+      <p class="eyebrow">はじめに</p>
+      <div class="box">
+        <div class="box-1">
+      <h1 id="welcome">いつもの授業へ、<br>すぐにアクセス。</h1>
+      <p>ログイン情報と時間割を登録して、Moodleをもっと使いやすく。<br>まずは下の3ステップから始めましょう。</p>
+      </div>
+      <div class="box-2"><img src="../assets/img/icon.png" alt="拡張機能のツール画面。Moodleを開くボタンと授業時刻を表示" loading="lazy"></div>
+       </div>
+      <div class="tip">
+        <p>Chrome右上の拡張機能メニューを開き、「高規格道路」の右側にあるピンの「固定」を押します。ツールバーにアイコンが表示され、次回からすぐに開けます。</p>
+        <figure class="guide-screenshot">
+          <a href="../assets/img/help/pinn.png" target="_blank" rel="noopener" aria-label="拡張機能の固定方法の画像を拡大">
+            <img src="../assets/img/help/pinn.png" alt="Chromeの拡張機能メニュー。「高規格道路」の右側にあるピンに「固定」と表示されています。" loading="lazy">
+          </a>
+        </figure>
+      </div>
+
+    </section>
+    <nav aria-label="使い方の目次"><a href="#setup">初期設定</a><a href="#shortcut">Moodleの移動先</a><a href="#sync">同期</a><a
+        href="#ai">AI</a><a href="#trouble">困ったとき</a></nav>
+    <section id="setup" aria-labelledby="setup-title">
+      <p class="eyebrow">セットアップ</p>
+      <h2 id="setup-title">まずは、3ステップ。</h2>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>ログイン情報を保存する</h3>
+            <p>拡張機能の「各種設定」→「Moodleの自動ログイン」にMC2のユーザーIDとパスワードを入力します。入力内容は自動保存されます。「ログイン情報を保存」ボタンでも保存できます。</p>
+            <p>保存したIDは、所属学科の判定にも使います。</p>
+            <figure class="guide-screenshot"><a href="../assets/img/help/login.png" target="_blank" rel="noopener"
+                aria-label="ユーザーIDとパスワードの入力欄、ログイン情報を保存ボタンを拡大"><img src="../assets/img/help/login.png"
+                  alt="ユーザーIDとパスワードの入力欄、ログイン情報を保存ボタン" loading="lazy"></a>
+            </figure>
+            <figcaption>ログイン情報はこの端末のみに保存されます。外部のサーバーへ送信や同期はされません。</figcaption>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>自分の授業を登録する</h3>
+            <p>「Moodleを開く」から所属学科の時間割ページへ進みます。「各種設定」の時間割に関する2つのスイッチをONにし、ページを再読み込みしてください。</p>
+            <figure class="guide-screenshot"><a href="../assets/img/help/timetable-settings.png" target="_blank"
+                rel="noopener" aria-label="時間割の表示と編集ボタンをONにした設定画面を拡大"><img
+                  src="../assets/img/help/timetable-settings.png" alt="時間割の表示と編集ボタンをONにした設定画面" loading="lazy"></a>
+              <figcaption>時間割の2つのスイッチをONにします。（クリックで拡大）</figcaption>
+            </figure>
+            <figure class="registration-demo">
+              <img id="registration-animation" src="../assets/img/help/registration-guide.gif"
+                alt="授業登録の5手順。編集アイコン、授業の丸印、青い選択状態、保存、自分専用での確認の順に表示します。">
+              <figcaption>授業を登録する流れ（約19秒で繰り返します）</figcaption>
+              <button type="button" id="registration-playback" aria-controls="registration-animation">GIFを停止</button>
+            </figure>
+            <details class="registration-details">
+              <summary>画像と説明を1つずつ確認する</summary>
+            <div class="registration-flow" aria-label="授業を登録する操作手順">
+              <article class="registration-step">
+                <h4>1. 編集モードを開く</h4>
+                <p>自分の学年・学期の時間割を表示し、「自分専用」の右にある鉛筆の編集アイコンを押します。</p>
+                <figure class="guide-screenshot registration-screenshot">
+                  <a href="../assets/img/help/registration-edit.png" target="_blank" rel="noopener" aria-label="1. 編集モードを開くの画像を拡大">
+                    <img src="../assets/img/help/registration-edit.png" alt="時間割上部の学年・学期タブと、右側の履修授業を編集アイコン" loading="lazy">
+                  </a>
+                  <figcaption>1. 編集モードを開く（クリックで拡大）</figcaption>
+                </figure>
+              </article>
+              <article class="registration-step">
+                <h4>2. 履修する授業を探す</h4>
+                <p>編集モードになると、各授業の右上に「◯」が表示されます。授業名・曜日・時限を確認して、登録したい授業の「◯」を押します。</p>
+                <figure class="guide-screenshot registration-screenshot">
+                  <a href="../assets/img/help/registration-choices.png" target="_blank" rel="noopener" aria-label="2. 履修する授業を探すの画像を拡大">
+                    <img src="../assets/img/help/registration-choices.png" alt="各授業のカード右上に丸印の登録ボタンが表示された時間割" loading="lazy">
+                  </a>
+                  <figcaption>2. 履修する授業を探す（クリックで拡大）</figcaption>
+                </figure>
+              </article>
+              <article class="registration-step">
+                <h4>3. 選択できたことを確認する</h4>
+                <p>選択した授業は背景が青色になり、ボタンが「✕」に変わります。間違えた場合は「✕」を押して解除できます。必要な授業を同じように選んでください。</p>
+                <figure class="guide-screenshot registration-screenshot">
+                  <a href="../assets/img/help/registration-selected.png" target="_blank" rel="noopener" aria-label="3. 選択できたことを確認するの画像を拡大">
+                    <img src="../assets/img/help/registration-selected.png" alt="社会生活と法の背景が青くなり、右上のボタンがバツ印に変わった状態" loading="lazy">
+                  </a>
+                  <figcaption>3. 選択できたことを確認する（クリックで拡大）</figcaption>
+                </figure>
+              </article>
+              <article class="registration-step">
+                <h4>4. 編集を終了する</h4>
+                <p>選び終えたら、時間割上部のフロッピー形の保存アイコンを押します。画面左下に表示される緑色の「保存」ボタンからも終了できます。</p>
+                <figure class="guide-screenshot registration-screenshot">
+                  <a href="../assets/img/help/registration-save.png" target="_blank" rel="noopener" aria-label="4. 編集を終了するの画像を拡大">
+                    <img src="../assets/img/help/registration-save.png" alt="時間割上部の保存アイコンと、左下の緑色の保存ボタン" loading="lazy">
+                  </a>
+                  <figcaption>4. 編集を終了する（クリックで拡大）</figcaption>
+                </figure>
+              </article>
+              <article class="registration-step">
+                <h4>5. 「自分専用」で確認する</h4>
+                <p>「自分専用」タブを押すと、登録した授業だけが曜日・時限ごとに表示されます。登録を解除するときは、この画面でも編集アイコンを押し、授業の「✕」を押してください。</p>
+                <figure class="guide-screenshot registration-screenshot">
+                  <a href="../assets/img/help/registration-personal.png" target="_blank" rel="noopener" aria-label="5. 「自分専用」で確認するの画像を拡大">
+                    <img src="../assets/img/help/registration-personal.png" alt="自分専用タブで、登録した社会生活と法だけが月曜1限に表示された時間割" loading="lazy">
+                  </a>
+                  <figcaption>5. 「自分専用」で確認する（クリックで拡大）</figcaption>
+                </figure>
+              </article>
+            </div>
+            </details>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>「Moodleを開く」を使う</h3>
+            <p>授業時間にボタンを押すと、登録した授業ページを新しいタブで開きます。授業がない時間は所属学科のページへ進みます。</p>
+            <figure class="guide-screenshot"><a href="../assets/img/help/tools.png" target="_blank" rel="noopener"
+                aria-label="ツールタブのMoodleを開くボタンと時計を拡大"><img src="../assets/img/help/tools.png"
+                  alt="ツールタブのMoodleを開くボタンと時計" loading="lazy"></a>
+              <figcaption>「ツール」→「Moodleを開く」を押します。時刻は表示例です。（クリックで拡大）</figcaption>
+            </figure>
+          </div>
+        </li>
+      </ol>
+    </section>
+    <section id="shortcut" aria-labelledby="shortcut-title">
+      <p class="eyebrow">ショートカット</p>
+      <h2 id="shortcut-title">開くページの優先順位</h2>
+      <div class="routes">
+        <div><span>01</span>
+          <h3>現在の授業</h3>
+          <p>ログインIDが保存され、現在の曜日・時限に登録した授業があるとき。</p>
+        </div>
+        <div><span>02</span>
+          <h3>所属学科</h3>
+          <p>該当する授業がないとき。保存したIDの先頭2文字から学科を判定します。</p>
+        </div>
+        <div><span>03</span>
+          <h3>Moodleトップ</h3>
+          <p>ログインIDが未登録、または学科を判定できないとき。</p>
+        </div>
+      </div>
+      <p class="note">授業時間の判定には、端末の曜日・時刻を使います。登録授業がある場合は学科を判定できなくても授業ページを優先します。休講・祝日・学期の切替は自動判定しません。</p>
+      <table>
+        <caption>授業ページを開く時間帯</caption>
+        <thead>
+          <tr>
+            <th scope="col">時限</th>
+            <th scope="col">時間</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1限</th>
+            <td>9:00〜10:45</td>
+          </tr>
+          <tr>
+            <th scope="row">2限</th>
+            <td>10:55〜12:40</td>
+          </tr>
+          <tr>
+            <th scope="row">3限</th>
+            <td>13:25〜15:10</td>
+          </tr>
+          <tr>
+            <th scope="row">4限</th>
+            <td>15:20〜17:05</td>
+          </tr>
+          <tr>
+            <th scope="row">5限</th>
+            <td>17:15〜19:00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">終了時刻ちょうどから授業時間外になります。6限以降は現在の自動判定の対象外です。</p>
+    </section>
+    <section id="sync" aria-labelledby="sync-title">
+      <p class="eyebrow">設定</p>
+      <h2 id="sync-title">時間割を他端末でも使う</h2>
+      <p>「各種設定」→「他端末と同期」で切り替えます。初期状態はOFFです。</p>
+      <figure class="guide-screenshot"><a href="../assets/img/help/sync.png" target="_blank" rel="noopener"
+          aria-label="他端末と同期スイッチがOFFの画面を拡大"><img src="../assets/img/help/sync.png" alt="他端末と同期スイッチがOFFの画面"
+            loading="lazy"></a>
+        <figcaption>「他端末と同期」は各種設定の一番上にあります。（クリックで拡大）</figcaption>
+      </figure>
+      <dl>
+        <dt>ON</dt>
+        <dd>
+          この端末の時間割・表示設定を同期先へ反映します。同じChromeアカウントを使い、Chrome側の拡張機能の同期も有効にしてください。同期先の端末でも、このスイッチをONにします。ONにする端末の内容が同期先に反映されるため、切替前に時間割を確認してください。
+        </dd>
+        <dt>OFF</dt>
+        <dd>現在の時間割・表示設定をこの端末内に保存します。その後の変更は他端末と共有しません。</dd>
+      </dl>
+      <p class="note">
+        ログイン・AI欄の「ローカル」タグは、この時間割の同期切替の対象外であることを示します。現在の実装ではログイン情報と一部のAI設定はChrome同期に保存され、モデル設定やチャット認証などは別に管理されます。</p>
+    </section>
+    <section id="ai" aria-labelledby="ai-title">
+      <p class="eyebrow">AIアシスト</p>
+      <h2 id="ai-title">問題について質問する</h2>
+      <ol>
+        <li>拡張機能の「ChatGPT」ボタンでチャットを開き、ログインします。</li>
+        <li>「AI設定」で「MoodleでAIを使う」をONにし、使用するモデルを選んで「設定を保存」を押します。</li>
+        <li>Moodleを再読み込みし、質問したい問題のETCボタンを押します。回答後、フラグにカーソルを合わせると回答を確認できます。</li>
+      </ol>
+      <figure class="guide-screenshot"><a href="../assets/img/help/ai.png" target="_blank" rel="noopener"
+          aria-label="AI設定をONにしたときの接続アカウントとモデル設定を拡大"><img src="../assets/img/help/ai.png"
+            alt="AI設定をONにしたときの接続アカウントとモデル設定" loading="lazy"></a>
+        <figcaption>「AI設定」をONにすると詳細が表示されます。画面は未ログイン時の例です。（クリックで拡大）</figcaption>
+      </figure>
+      <p>「回答を自動入力」をONにすると、回答を選択肢や入力欄へ反映します。提出は自動で行いません。「入力済みの回答も置き換える」は必要に応じて設定してください。</p>
+      <div class="tip">質問した問題の文章・選択肢・画像がOpenAIに送信されます。AIの回答は誤ることがあるため、内容を確認して利用してください。</div>
+    </section>
+    <section id="trouble" aria-labelledby="trouble-title">
+      <p class="eyebrow">ヘルプ</p>
+      <h2 id="trouble-title">うまく動かないとき</h2>
+      <details>
+        <summary>授業ページが開かない</summary>
+        <p>「自分専用」の時間割に授業が登録されているか、現在の曜日・時刻が授業時間内かを確認してください。ログインIDが未保存の場合はトップページを開きます。</p>
+      </details>
+      <details>
+        <summary>学科ページが開かない</summary>
+        <p>「各種設定」でMC2のユーザーIDを保存してください。IDから学科を判定できない場合はMoodleトップを開きます。</p>
+      </details>
+      <details>
+        <summary>更新後にボタンやAIが動かない</summary>
+        <p>Chromeの拡張機能管理画面で拡張機能を再読み込みし、開いているMoodleのページも再読み込みしてください。ログインできないときは、保存したID・パスワードも確認してください。</p>
+      </details>
+      <details>
+        <summary>このガイドをもう一度見たい</summary>
+        <p>拡張機能の上部、ロゴの右側にある「使い方ガイドを開く」から、いつでも開けます。</p>
+      </details>
+    </section>
+    <footer>準備ができたら、このタブを閉じて拡張機能を開いてください。<br>このガイドは初めて拡張機能を開いたときに、背面のタブに一度だけ開きます。</footer>
+  </main>
+  <script src="help.js"></script>
+</body>
+
+</html>

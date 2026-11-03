@@ -47,11 +47,11 @@ test('loaded extension captures loopback callback without a listening server', a
     for (let i = 0; i < 80; i++) { const value = await get(); if (predicate(value)) return value; await new Promise(resolve => setTimeout(resolve, 100)); }
     assert.fail(label);
   }
-  const worker = await until(() => call('Target.getTargets'), result => result.targetInfos.some(target => target.url.endsWith('/chat-worker.mjs')), 'extension worker did not load; check manifest');
-  const target = worker.targetInfos.find(target => target.url.endsWith('/chat-worker.mjs'));
+  const worker = await until(() => call('Target.getTargets'), result => result.targetInfos.some(target => target.url.endsWith('/background/chat-worker.mjs')), 'extension worker did not load; check manifest');
+  const target = worker.targetInfos.find(target => target.url.endsWith('/background/chat-worker.mjs'));
   const { sessionId: workerSession } = await call('Target.attachToTarget', { targetId: target.targetId, flatten: true });
-  const origin = target.url.slice(0, target.url.lastIndexOf('/'));
-  const { targetId: panelId } = await call('Target.createTarget', { url: origin + '/chat-panel.html' });
+  const origin = target.url.slice(0, target.url.indexOf('/background/'));
+  const { targetId: panelId } = await call('Target.createTarget', { url: origin + '/chat/chat-panel.html' });
   const { sessionId: panelSession } = await call('Target.attachToTarget', { targetId: panelId, flatten: true });
   await until(() => evaluate(panelSession, "Boolean(document.getElementById('login')) && !document.getElementById('login').disabled"), Boolean, 'panel did not connect to worker');
   // Keep the sign-in tab local during this test, while using real Chrome APIs
@@ -98,8 +98,8 @@ test('loaded extension captures loopback callback without a listening server', a
   await evaluate(workerSession, `globalThis.realTabUpdate(globalThis.testAuthTab, {url:'http://127.0.0.1:${redirector.address().port}/authorize'}).catch(()=>{})`);
   await until(() => evaluate(panelSession, "checkConnection(true).then(()=>!document.getElementById('prompt').disabled)"), Boolean, 'callback did not authenticate the extension');
   const tabs = await call('Target.getTargets');
-  assert.ok(tabs.targetInfos.some(tab => tab.url.endsWith('/chat-auth-result.html')));
-  const resultTarget = tabs.targetInfos.find(tab => tab.url.endsWith('/chat-auth-result.html'));
+  assert.ok(tabs.targetInfos.some(tab => tab.url.endsWith('/chat/chat-auth-result.html')));
+  const resultTarget = tabs.targetInfos.find(tab => tab.url.endsWith('/chat/chat-auth-result.html'));
   const { sessionId: resultSession } = await call('Target.attachToTarget', { targetId: resultTarget.targetId, flatten: true });
   // The original panel tab is still active in headless tests; explicitly
   // activate the result page just as browser navigation does for a user.
@@ -130,7 +130,7 @@ test('loaded extension captures loopback callback without a listening server', a
   // Exercise the actual popup, injected Moodle script, and OAuth worker as a
   // single flow. The synthetic Moodle page is served at its real origin.
   await evaluate(workerSession, "chrome.storage.sync.set({ncheak:false,nkey:'obsolete-test-key'})");
-  const { targetId: popupId } = await call('Target.createTarget', { url: origin + '/popup.html' });
+  const { targetId: popupId } = await call('Target.createTarget', { url: origin + '/popup/popup.html' });
   const { sessionId: popupSession } = await call('Target.attachToTarget', { targetId: popupId, flatten: true });
   await until(() => evaluate(popupSession, "Boolean(document.getElementById('etc-account')) && document.getElementById('etc-account').textContent.includes('接続済み')"), Boolean, 'ETC popup did not show the OAuth account');
   await evaluate(popupSession, "document.getElementById('tab-C').click(); document.getElementById('nkey-checkbox').checked=true; document.getElementById('nkey-checkbox').dispatchEvent(new Event('change')); document.getElementById('save').click()");

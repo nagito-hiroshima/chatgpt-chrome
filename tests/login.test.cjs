@@ -9,7 +9,7 @@ const path = require('node:path');
 const { setTimeout: delay } = require('node:timers/promises');
 const { once } = require('node:events');
 
-const source = fs.readFileSync(path.join(__dirname, '..', 'login.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '..', 'moodle/login.js'), 'utf8');
 const password = 'demo-password<&+ with spaces ';
 // Moodle's toggle-sensitive module serializes this input using outerHTML.
 // The DOM value property is deliberately absent from the serialized value attribute.
