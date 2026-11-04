@@ -123,7 +123,7 @@ test('loaded extension captures loopback callback without a listening server', a
   await evaluate(panelSession, "document.getElementById('prompt').value = '質問'; document.getElementById('composer').requestSubmit()");
   await until(() => evaluate(panelSession, "document.getElementById('status').textContent.includes('返信が完了')"), Boolean, 'runtime port did not stream response');
   assert.equal(await evaluate(panelSession, "document.querySelector('.message.assistant .text').textContent"), '拡張機能から返信');
-  const persisted = await evaluate(workerSession, 'Promise.all([chrome.storage.local.get(null),chrome.storage.session.get(null)]).then(JSON.stringify)');
+  const persisted = await evaluate(workerSession, 'chrome.storage.local.get(null).then(JSON.stringify)');
   assert.ok(!persisted.includes('extension-test-token'));
   assert.ok(!persisted.includes(jwt));
 

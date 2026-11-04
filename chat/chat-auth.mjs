@@ -1,4 +1,4 @@
-// Public OAuth client. Tokens live only in the extension worker's memory.
+// Public OAuth client. Tokens stay in trusted, browser-session memory storage.
 import { validMessages } from './chat-content.mjs';
 export const ISSUER = 'https://auth.openai.com';
 export const RESOURCE = 'https://api.openai.com/v1';
@@ -62,8 +62,10 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
     chatHost = { id: `urn:uuid:${crypto.randomUUID()}`, accounts: [] };
     await local.set({ chatHost });
   }
-  let active = '', generation = 0, refresh = null, processing = false;
-  const sessions = new Map(); const chats = new Set();
+  const { chatSessions } = await transient.get('chatSessions');
+  let active = chatSessions?.active ?? '', generation = 0, refresh = null, processing = false;
+  const sessions = new Map(chatSessions?.entries ?? []); const chats = new Set();
+  const saveSessions = () => transient.set({ chatSessions: { active, entries: [...sessions] } });
   const saveHost = () => local.set({ chatHost });
   const form = body => ({ method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(body) });
   const request = (url, options = {}) => fetcher(url, { ...options, signal: options.signal ?? AbortSignal.timeout(30000), credentials: 'omit', cache: 'no-store', redirect: 'error' });
@@ -82,6 +84,7 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
         const tokens = await read(`${ISSUER}/api/accounts/oauth/token`, form({ grant_type: 'refresh_token', client_id: session.clientId, refresh_token: session.refresh_token, resource: RESOURCE }));
         if (!tokens.access_token) fail('再ログインが必要です。');
         Object.assign(session, tokens, { expiresAt: Date.now() + Number(tokens.expires_in ?? 3600) * 1000 });
+        await saveSessions();
       })().finally(() => { refresh = null; });
       await refresh;
     }
@@ -104,7 +107,7 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
       const account = chatHost.accounts.find(a => a.clientId === clientId);
       const attempt = { state: random(), nonce: random(), verifier: random(), account, tabId, generation, expires: Date.now() + 600000 };
       const challenge = encode(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(attempt.verifier)));
-      // Only PKCE transaction state is persisted, never OAuth tokens.
+      // Keep PKCE transaction state across service worker restarts.
       await transient.set({ chatPending: attempt, chatAuthError: '' });
       const params = { client_id: account?.clientId ?? 'dynamic_agent_client', ext_agent_host_id: chatHost.id, response_type: 'code', redirect_uri: CALLBACK, scope: SCOPES, resource: RESOURCE, state: attempt.state, nonce: attempt.nonce, code_challenge_method: 'S256', code_challenge: challenge };
       if (!account) params.agent_name_hint = '高規格道路';
@@ -140,6 +143,7 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
         await saveHost();
         sessions.set(clientId, { ...tokens, clientId, expiresAt: Date.now() + Number(tokens.expires_in ?? 3600) * 1000 });
         active = clientId;
+        await saveSessions();
         await transient.set({ chatAuthError: '', chatResult: { tabId, state: 'connected', clientId, email: account.email } });
       } catch (e) {
         const message = e.chatSafe ? e.message : 'ログインを完了できませんでした。接続状況を確認して再ログインしてください。';
@@ -180,6 +184,10 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
       await transient.remove('chatPending');
       for (const controller of chats) controller.abort();
       const session = sessions.get(active); const clientId = active; active = '';
+      sessions.delete(clientId);
+      await saveSessions();
+      // Finish an in-flight rotation before revoking its latest refresh token.
+      if (refresh) await refresh.catch(() => {});
       let revoked = !session?.refresh_token;
       try {
         if (session?.refresh_token) {
@@ -189,7 +197,7 @@ export async function createChatClient({ local, transient, fetcher = fetch } = {
           revoked = (await request(endpoint, form({ token: session.refresh_token, token_type_hint: 'refresh_token', client_id: clientId }))).ok;
         }
       } catch { revoked = false; }
-      finally { sessions.delete(clientId); await transient.set({ chatAuthError: '' }); }
+      finally { await transient.set({ chatAuthError: '' }); }
       return { revoked };
     }
   };

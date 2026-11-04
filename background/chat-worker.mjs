@@ -2,7 +2,7 @@ import './main.js';
 import { createChatClient } from '../chat/chat-auth.mjs';
 import { createMoodleAI, isMoodleSender } from '../moodle/moodle-ai.mjs';
 
-const client = createChatClient({ local: chrome.storage.local, transient: chrome.storage.session, fetcher: (...args) => fetch(...args) });
+const client = chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' }).then(() => createChatClient({ local: chrome.storage.local, transient: chrome.storage.session, fetcher: (...args) => fetch(...args) }));
 const panelURL = chrome.runtime.getURL('chat/chat-panel.html');
 const resultURL = chrome.runtime.getURL('chat/chat-auth-result.html');
 const popupURL = chrome.runtime.getURL('popup/popup.html');

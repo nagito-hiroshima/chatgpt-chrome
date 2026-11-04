@@ -88,8 +88,15 @@ test('serverless PKCE callback, refresh, streaming, worker restart, and logout',
   assert.equal(captured.store, false); assert.equal(captured.stream, true);
   mode = 'failed';
   await assert.rejects(api.chat({ model: 'test-model', messages: [{ role: 'user', content: '質問' }] }, () => {}));
-  assert.ok(!JSON.stringify({ local: local.data, transient: transient.data }).includes('test-access-token'));
-  assert.ok(!JSON.stringify({ local: local.data, transient: transient.data }).includes('rotated-refresh'));
+  assert.ok(!JSON.stringify(local.data).includes('test-access-token'));
+  assert.ok(!JSON.stringify(local.data).includes('rotated-refresh'));
+  api = await createChatClient({ local, transient, fetcher });
+  assert.equal((await api.status()).connected, true, 'worker restart restores the active account');
+  await api.models();
+  assert.equal(refreshed, 1, 'rotated credentials survive worker restart');
+  assert.equal(transient.data.chatSessions.entries[0][1].refresh_token, 'rotated-refresh');
+  const browserRestart = await createChatClient({ local, transient: store(), fetcher });
+  assert.equal((await browserRestart.status()).connected, false, 'browser-session clearing removes credentials');
   const deniedAuth = new URL(await api.begin('', 46));
   const deniedCallback = new URL(CALLBACK);
   deniedCallback.search = new URLSearchParams({ state: deniedAuth.searchParams.get('state'), error: 'access_denied' });
@@ -104,5 +111,5 @@ test('serverless PKCE callback, refresh, streaming, worker restart, and logout',
   await api.cancelLogin(45);
   assert.equal((await api.status()).pending, false);
   const restarted = await createChatClient({ local, transient, fetcher });
-  assert.equal((await restarted.status()).connected, false, 'credentials are not persisted across worker shutdown');
+  assert.equal((await restarted.status()).connected, false, 'logout remains effective after worker restart');
 });
